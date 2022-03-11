@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recipe index on Learn Buffalo</title>
+    <link>http://learn-buffalo.net/recipe/</link>
+    <description>Recent content in Recipe index on Learn Buffalo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="http://learn-buffalo.net/recipe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Demo Recipe</title>
+      <link>http://learn-buffalo.net/recipe/demo-recipe/</link>
+      <pubDate>Sun, 27 Feb 2022 21:51:05 -0600</pubDate>
+      
+      <guid>http://learn-buffalo.net/recipe/demo-recipe/</guid>
+      <description>Domestic dogs inherited complex behaviors, such as bite inhibition, from their wolf ancestors, which would have been pack hunters with complex body language. These sophisticated forms of social cognition and communication may account for their trainability, playfulness, and ability to fit into human households and social situations, and these attributes have given dogs a relationship with humans that has enabled them to become one of the most successful species on the planet today.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recipes index on Learn Buffalo</title>
+    <link>http://learn-buffalo.net/recipes/</link>
+    <description>Recent content in Recipes index on Learn Buffalo</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="http://learn-buffalo.net/recipes/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

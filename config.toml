@@ -1,0 +1,7 @@
+baseURL = 'http://learn-buffalo.net/'
+languageCode = 'en-us'
+title = 'Learn Buffalo'
+theme = 'learnbuffalo'
+
+[markup]
+  defaultMarkdownHandler = "blackfriday"

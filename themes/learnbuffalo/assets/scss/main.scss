@@ -1,0 +1,84 @@
+$primary: #CC8D1A;
+$primary-lt: #E3C75F;
+$secondary: #164C45;
+$tertiary: #16232E;
+
+body {
+  background-color: lighten($color: $primary, $amount: 40%);
+  font-size: 18px;
+  color: black;
+  font-family: sans-serif;
+}
+
+a {
+  color: $secondary;
+  text-decoration: none;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.page-title {
+  margin: 2em 0;
+
+  h1 {
+    background-color: $primary;
+    color: $tertiary;
+    display: inline;
+    padding: 15px 35px;
+    clip-path: polygon(15px 8%, 100% 0%, calc(100% - 15px) 92%, 0% 100%);
+  }
+}
+
+.ui.segment {
+  background-color: lighten($color: $primary-lt, $amount: 35%);
+
+  &.series-step {
+    text-transform: uppercase;
+    padding: 8px 12px;
+
+    p {
+      font-size: 0.9em;
+      font-weight: 600;
+      margin: 0;
+      color: change-color($color: $secondary, $saturation: 10%, $lightness: 40%);
+    }
+  }
+}
+
+.series-li {
+  h2 {
+    margin: 8px 0 0;
+
+    a {
+      color: black;
+    }
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  p.series-step {
+    text-transform: uppercase;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin: 0;
+    color: change-color($color: $secondary, $saturation: 10%, $lightness: 40%);
+    text-align: right;
+  }
+}
+
+a.link-border {
+  border-bottom: 4px solid transparent;
+  text-decoration: none;
+  transition: border 200ms;
+  padding-bottom: 4px;
+
+  &:hover {
+    border-bottom-color: $secondary;
+    text-decoration: none;
+  }
+}

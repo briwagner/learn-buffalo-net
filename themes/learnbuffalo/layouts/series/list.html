@@ -1,0 +1,23 @@
+{{ define "main" }}
+  <div class="page-title">
+    <h1>{{ .Title }}</h1>
+  </div>
+
+  {{ .Content }}
+
+  {{ $pages := where .Site.RegularPages "Type" "series"}}
+  {{ $ordered_pages := $pages.ByParam "step" }}
+  {{ $count := sub (len $ordered_pages) 1 }}
+  {{ range $idx, $el := $ordered_pages }}
+    {{ if eq $idx 0 }}
+      <div class="ui segment top attached padded">
+    {{ else if eq $idx $count }}
+      <div class="ui segment bottom attached padded">
+    {{ else }}
+      <div class="ui segment attached padded">
+    {{ end }}
+      {{ .Render "li" }}
+    </div>
+  {{ end }}
+
+{{ end }}

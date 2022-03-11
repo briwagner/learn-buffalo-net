@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://learn-buffalo.net/recipe/demo-recipe/</loc>
+    <lastmod>2022-02-27T21:51:05-06:00</lastmod>
+  </url><url>
+    <loc>http://learn-buffalo.net/</loc>
+    <lastmod>2022-02-27T21:51:05-06:00</lastmod>
+  </url><url>
+    <loc>http://learn-buffalo.net/about/</loc>
+    <lastmod>2022-02-27T21:28:24-06:00</lastmod>
+  </url><url>
+    <loc>http://learn-buffalo.net/recipe/</loc>
+    <lastmod>2022-02-27T21:28:24-06:00</lastmod>
+  </url><url>
+    <loc>http://learn-buffalo.net/recipes/</loc>
+    <lastmod>2022-02-27T21:28:24-06:00</lastmod>
+  </url><url>
+    <loc>http://learn-buffalo.net/categories/</loc>
+  </url><url>
+    <loc>http://learn-buffalo.net/tags/</loc>
+  </url>
+</urlset>
