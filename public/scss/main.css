@@ -40,7 +40,7 @@ p {
   .page-title h1 {
     background-color: #CC8D1A;
     color: #16232E;
-    display: inline;
+    display: inline-block;
     padding: 15px 35px;
     clip-path: polygon(15px 8%, 100% 0%, calc(100% - 15px) 92%, 0% 100%); }
 
