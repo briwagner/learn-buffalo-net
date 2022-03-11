@@ -2,23 +2,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://learn-buffalo.net/recipe/demo-recipe/</loc>
+    <loc>http://learnbuffalo.net/series/part-ten/</loc>
+    <lastmod>2022-03-10T21:27:30-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-nine/</loc>
+    <lastmod>2022-03-10T21:27:26-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-eight/</loc>
+    <lastmod>2022-03-10T21:27:23-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-seven/</loc>
+    <lastmod>2022-03-10T21:15:51-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-six/</loc>
+    <lastmod>2022-03-10T21:15:47-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-five/</loc>
+    <lastmod>2022-03-10T21:15:44-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-four/</loc>
+    <lastmod>2022-03-10T21:02:49-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-three/</loc>
+    <lastmod>2022-03-01T21:43:03-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-two/</loc>
+    <lastmod>2022-03-01T21:43:00-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/series/part-one/</loc>
+    <lastmod>2022-03-01T21:31:17-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/recipe/connect-to-mongodb/</loc>
+    <lastmod>2022-03-01T20:24:36-06:00</lastmod>
+  </url><url>
+    <loc>http://learnbuffalo.net/recipe/integrate-search/</loc>
     <lastmod>2022-02-27T21:51:05-06:00</lastmod>
   </url><url>
-    <loc>http://learn-buffalo.net/</loc>
-    <lastmod>2022-02-27T21:51:05-06:00</lastmod>
-  </url><url>
-    <loc>http://learn-buffalo.net/about/</loc>
+    <loc>http://learnbuffalo.net/about/</loc>
     <lastmod>2022-02-27T21:28:24-06:00</lastmod>
   </url><url>
-    <loc>http://learn-buffalo.net/recipe/</loc>
+    <loc>http://learnbuffalo.net/</loc>
     <lastmod>2022-02-27T21:28:24-06:00</lastmod>
   </url><url>
-    <loc>http://learn-buffalo.net/recipes/</loc>
+    <loc>http://learnbuffalo.net/recipe/</loc>
     <lastmod>2022-02-27T21:28:24-06:00</lastmod>
   </url><url>
-    <loc>http://learn-buffalo.net/categories/</loc>
+    <loc>http://learnbuffalo.net/series/</loc>
+    <lastmod>2022-02-27T21:28:24-06:00</lastmod>
   </url><url>
-    <loc>http://learn-buffalo.net/tags/</loc>
+    <loc>http://learnbuffalo.net/categories/</loc>
+  </url><url>
+    <loc>http://learnbuffalo.net/tags/</loc>
   </url>
 </urlset>

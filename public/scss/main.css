@@ -1,2 +1,96 @@
 body {
-  background-color: antiquewhite; }
+  background-color: #f6e2bc;
+  font-family: 'Lato', sans-serif;
+  font-size: 18px;
+  color: black;
+  margin: 0; }
+
+a {
+  color: #164C45;
+  text-decoration: none;
+  font-weight: 600; }
+  a:hover {
+    text-decoration: underline; }
+
+p {
+  line-height: 1.5rem; }
+
+.header {
+  background-color: #16232E;
+  color: white;
+  min-height: 50px;
+  border-bottom: 3px solid #CC8D1A;
+  text-align: center; }
+  .header .header-slug {
+    font-size: 1.4rem;
+    padding: 15px 0; }
+
+#content {
+  min-height: calc(100vh - 250px); }
+
+.ui.menu.main-menu {
+  margin-top: 0;
+  background-color: #f9f6ec; }
+  .ui.menu.main-menu a.item {
+    color: #16232E;
+    font-weight: 600; }
+
+.page-title {
+  margin: 3em 0; }
+  .page-title h1 {
+    background-color: #CC8D1A;
+    color: #16232E;
+    display: inline;
+    padding: 15px 35px;
+    clip-path: polygon(15px 8%, 100% 0%, calc(100% - 15px) 92%, 0% 100%); }
+
+.ui.segment {
+  background-color: #fefcf7; }
+  .ui.segment.series-step {
+    text-transform: uppercase;
+    padding: 8px 12px; }
+    .ui.segment.series-step p {
+      font-size: 0.9em;
+      font-weight: 600;
+      margin: 0;
+      color: #5c706e; }
+
+.section-title {
+  color: #16232E;
+  margin: 2rem 0;
+  line-height: 1.75rem;
+  max-width: 45rem; }
+
+.series-li h2 {
+  margin: 8px 0 0; }
+  .series-li h2 a {
+    color: black; }
+    .series-li h2 a:hover, .series-li h2 a:focus {
+      text-decoration: underline; }
+
+.series-li p {
+  margin: 5px 0; }
+
+.series-li p.series-step {
+  text-transform: uppercase;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin: 0;
+  color: #5c706e;
+  text-align: right; }
+
+a.link-border {
+  border-bottom: 4px solid transparent;
+  text-decoration: none;
+  transition: border 200ms;
+  padding-bottom: 4px; }
+  a.link-border:hover, a.link-border:focus {
+    border-bottom-color: #164C45;
+    text-decoration: none; }
+
+.footer {
+  margin-top: 3em;
+  min-height: 100px;
+  border-top: 3px solid #CC8D1A;
+  background-color: #16232E;
+  color: white; }
