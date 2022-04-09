@@ -2,98 +2,98 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series: Build a Blog Site on Learn Buffalo</title>
-    <link>http://learnbuffalo.net/series/</link>
+    <link>https://learnbuffalo.net/series/</link>
     <description>Recent content in Series: Build a Blog Site on Learn Buffalo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="http://learnbuffalo.net/series/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="https://learnbuffalo.net/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Develop or Deploy with Docker</title>
-      <link>http://learnbuffalo.net/series/part-ten/</link>
+      <link>https://learnbuffalo.net/series/part-ten/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:30 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-ten/</guid>
+      <guid>https://learnbuffalo.net/series/part-ten/</guid>
       <description>Build a web app inside Docker for local development or deploy on a cloud provider.</description>
     </item>
     
     <item>
       <title>Build for Production and Deploy</title>
-      <link>http://learnbuffalo.net/series/part-nine/</link>
+      <link>https://learnbuffalo.net/series/part-nine/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:26 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-nine/</guid>
+      <guid>https://learnbuffalo.net/series/part-nine/</guid>
       <description>Enable production mode, build and run the app on a Linux server.</description>
     </item>
     
     <item>
       <title>Third-party Integration and Events</title>
-      <link>http://learnbuffalo.net/series/part-eight/</link>
+      <link>https://learnbuffalo.net/series/part-eight/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:23 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-eight/</guid>
+      <guid>https://learnbuffalo.net/series/part-eight/</guid>
       <description>Connect to MongoDB, and leverage Buffalo events to integrate with other services.</description>
     </item>
     
     <item>
       <title>Middleware and User Authentication Plugin</title>
-      <link>http://learnbuffalo.net/series/part-seven/</link>
+      <link>https://learnbuffalo.net/series/part-seven/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:51 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-seven/</guid>
+      <guid>https://learnbuffalo.net/series/part-seven/</guid>
       <description>Leverage a Buffalo plugin to generate user authentication.</description>
     </item>
     
     <item>
       <title>Forms</title>
-      <link>http://learnbuffalo.net/series/part-six/</link>
+      <link>https://learnbuffalo.net/series/part-six/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:47 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-six/</guid>
+      <guid>https://learnbuffalo.net/series/part-six/</guid>
       <description>Create forms with Plush helpers or plain HTML.</description>
     </item>
     
     <item>
       <title>HTML Templates and Helpers</title>
-      <link>http://learnbuffalo.net/series/part-five/</link>
+      <link>https://learnbuffalo.net/series/part-five/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:44 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-five/</guid>
+      <guid>https://learnbuffalo.net/series/part-five/</guid>
       <description>Use Plush templates and helpers to generate HTML.</description>
     </item>
     
     <item>
       <title>Controllers</title>
-      <link>http://learnbuffalo.net/series/part-four/</link>
+      <link>https://learnbuffalo.net/series/part-four/</link>
       <pubDate>Thu, 10 Mar 2022 21:02:49 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-four/</guid>
+      <guid>https://learnbuffalo.net/series/part-four/</guid>
       <description>Generate controller routes to show models in list form and single item.</description>
     </item>
     
     <item>
       <title>Models and Associations</title>
-      <link>http://learnbuffalo.net/series/part-three/</link>
+      <link>https://learnbuffalo.net/series/part-three/</link>
       <pubDate>Tue, 01 Mar 2022 21:43:03 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-three/</guid>
+      <guid>https://learnbuffalo.net/series/part-three/</guid>
       <description>Models and associations, one-to-one, one-to-many, many-to-many</description>
     </item>
     
     <item>
       <title>Create a User Model</title>
-      <link>http://learnbuffalo.net/series/part-two/</link>
+      <link>https://learnbuffalo.net/series/part-two/</link>
       <pubDate>Tue, 01 Mar 2022 21:43:00 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-two/</guid>
+      <guid>https://learnbuffalo.net/series/part-two/</guid>
       <description>Create a user model, add fields and methods, and test</description>
     </item>
     
     <item>
       <title>Create a New Project</title>
-      <link>http://learnbuffalo.net/series/part-one/</link>
+      <link>https://learnbuffalo.net/series/part-one/</link>
       <pubDate>Tue, 01 Mar 2022 21:31:17 -0600</pubDate>
       
-      <guid>http://learnbuffalo.net/series/part-one/</guid>
+      <guid>https://learnbuffalo.net/series/part-one/</guid>
       <description>Create a new project, add static content, use dynamic route parameters.</description>
     </item>
     
