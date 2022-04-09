@@ -2,10 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on Learn Buffalo</title>
-    <link>https://learnbuffalo.net/about/</link>
+    <link>/about/</link>
     <description>Recent content in About on Learn Buffalo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="https://learnbuffalo.net/about/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

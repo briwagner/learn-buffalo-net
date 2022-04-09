@@ -2,116 +2,116 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Learn Buffalo in Go on Learn Buffalo</title>
-    <link>https://learnbuffalo.net/</link>
+    <link>/</link>
     <description>Recent content in Learn Buffalo in Go on Learn Buffalo</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="https://learnbuffalo.net/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Develop or Deploy with Docker</title>
-      <link>https://learnbuffalo.net/series/part-ten/</link>
+      <link>/series/part-ten/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:30 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-ten/</guid>
+      <guid>/series/part-ten/</guid>
       <description>Build a web app inside Docker for local development or deploy on a cloud provider.</description>
     </item>
     
     <item>
       <title>Build for Production and Deploy</title>
-      <link>https://learnbuffalo.net/series/part-nine/</link>
+      <link>/series/part-nine/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:26 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-nine/</guid>
+      <guid>/series/part-nine/</guid>
       <description>Enable production mode, build and run the app on a Linux server.</description>
     </item>
     
     <item>
       <title>Third-party Integration and Events</title>
-      <link>https://learnbuffalo.net/series/part-eight/</link>
+      <link>/series/part-eight/</link>
       <pubDate>Thu, 10 Mar 2022 21:27:23 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-eight/</guid>
+      <guid>/series/part-eight/</guid>
       <description>Connect to MongoDB, and leverage Buffalo events to integrate with other services.</description>
     </item>
     
     <item>
       <title>Middleware and User Authentication Plugin</title>
-      <link>https://learnbuffalo.net/series/part-seven/</link>
+      <link>/series/part-seven/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:51 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-seven/</guid>
+      <guid>/series/part-seven/</guid>
       <description>Leverage a Buffalo plugin to generate user authentication.</description>
     </item>
     
     <item>
       <title>Forms</title>
-      <link>https://learnbuffalo.net/series/part-six/</link>
+      <link>/series/part-six/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:47 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-six/</guid>
+      <guid>/series/part-six/</guid>
       <description>Create forms with Plush helpers or plain HTML.</description>
     </item>
     
     <item>
       <title>HTML Templates and Helpers</title>
-      <link>https://learnbuffalo.net/series/part-five/</link>
+      <link>/series/part-five/</link>
       <pubDate>Thu, 10 Mar 2022 21:15:44 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-five/</guid>
+      <guid>/series/part-five/</guid>
       <description>Use Plush templates and helpers to generate HTML.</description>
     </item>
     
     <item>
       <title>Controllers</title>
-      <link>https://learnbuffalo.net/series/part-four/</link>
+      <link>/series/part-four/</link>
       <pubDate>Thu, 10 Mar 2022 21:02:49 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-four/</guid>
+      <guid>/series/part-four/</guid>
       <description>Generate controller routes to show models in list form and single item.</description>
     </item>
     
     <item>
       <title>Models and Associations</title>
-      <link>https://learnbuffalo.net/series/part-three/</link>
+      <link>/series/part-three/</link>
       <pubDate>Tue, 01 Mar 2022 21:43:03 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-three/</guid>
+      <guid>/series/part-three/</guid>
       <description>Models and associations, one-to-one, one-to-many, many-to-many</description>
     </item>
     
     <item>
       <title>Create a User Model</title>
-      <link>https://learnbuffalo.net/series/part-two/</link>
+      <link>/series/part-two/</link>
       <pubDate>Tue, 01 Mar 2022 21:43:00 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-two/</guid>
+      <guid>/series/part-two/</guid>
       <description>Create a user model, add fields and methods, and test</description>
     </item>
     
     <item>
       <title>Create a New Project</title>
-      <link>https://learnbuffalo.net/series/part-one/</link>
+      <link>/series/part-one/</link>
       <pubDate>Tue, 01 Mar 2022 21:31:17 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/series/part-one/</guid>
+      <guid>/series/part-one/</guid>
       <description>Create a new project, add static content, use dynamic route parameters.</description>
     </item>
     
     <item>
       <title>Connect to Mongodb</title>
-      <link>https://learnbuffalo.net/recipe/connect-to-mongodb/</link>
+      <link>/recipe/connect-to-mongodb/</link>
       <pubDate>Tue, 01 Mar 2022 20:24:36 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/recipe/connect-to-mongodb/</guid>
+      <guid>/recipe/connect-to-mongodb/</guid>
       <description>Connect to a Mongo DB instance for your data model needs, replacing the default Pop plugin</description>
     </item>
     
     <item>
       <title>Integrate Search</title>
-      <link>https://learnbuffalo.net/recipe/integrate-search/</link>
+      <link>/recipe/integrate-search/</link>
       <pubDate>Sun, 27 Feb 2022 21:51:05 -0600</pubDate>
       
-      <guid>https://learnbuffalo.net/recipe/integrate-search/</guid>
+      <guid>/recipe/integrate-search/</guid>
       <description>Push content into a search index with Buffalo events, and allow users to find content by search.</description>
     </item>
     

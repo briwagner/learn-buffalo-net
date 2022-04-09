@@ -1,4 +1,3 @@
-baseURL = 'https://learnbuffalo.net/'
 languageCode = 'en-us'
 title = 'Learn Buffalo'
 theme = 'learnbuffalo'
