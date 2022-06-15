@@ -6,9 +6,8 @@
 
 <div class="ui menu main-menu">
   <div class="ui container main-nav">
-    <a href="/" class="item">Home</a>
-    <a href="/series" class="item">Series</a>
-    <a href="/recipe" class="item">Recipes</a>
-    <a href="/about" class="item">About</a>
+    {{ range .Site.Menus.main }}
+      <a href="{{.URL}}" class="item">{{.Name}}</a>
+    {{ end }}
   </div>
 </div>

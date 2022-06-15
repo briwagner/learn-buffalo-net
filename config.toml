@@ -1,6 +1,22 @@
 languageCode = 'en-us'
 title = 'Learn Buffalo'
 theme = 'learnbuffalo'
-
 [markup]
   defaultMarkdownHandler = "blackfriday"
+[menu]
+[[menu.main]]
+  name = "Home"
+  url = "/"
+  weight = 1
+[[menu.main]]
+  name = "Series"
+  url = "/series"
+  weight = 2
+[[menu.main]]
+  name = "Recipes"
+  url = "/recipe"
+  weight = 3
+[[menu.main]]
+  name = "About"
+  url = "/about"
+  weight = 4
