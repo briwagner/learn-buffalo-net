@@ -20,3 +20,43 @@ theme = 'learnbuffalo'
   name = "About"
   url = "/about"
   weight = 4
+[[menu.series]]
+  name = "Create a Project"
+  url = "/series/part-one"
+  weight = 1
+[[menu.series]]
+  name = "Create a User Model"
+  url = "/series/part-two"
+  weight = 2
+[[menu.series]]
+  name = "Models and Associations"
+  url = "/series/part-three"
+  weight = 3
+[[menu.series]]
+  name = "Controllers"
+  url = "/series/part-four"
+  weight = 4
+[[menu.series]]
+  name = "HTML Templates and Helpers"
+  url = "/series/part-five"
+  weight = 5
+[[menu.series]]
+  name = "Forms"
+  url = "/series/part-six"
+  weight = 6
+[[menu.series]]
+  name = "Middleware and User Authentication"
+  url = "/series/part-seven"
+  weight = 7
+[[menu.series]]
+  name = "Third-party Integration and Events"
+  url = "/series/part-eight"
+  weight = 8
+[[menu.series]]
+  name = "Build and Deploy"
+  url = "/series/part-nine"
+  weight = 9
+[[menu.series]]
+  name = "Deploy with Docker"
+  url = "/series/part-ten"
+  weight = 10

@@ -15,6 +15,10 @@ a {
 p {
   line-height: 1.5rem; }
 
+.text-right {
+  text-align: right;
+  display: block; }
+
 .header {
   background-color: #16232E;
   color: white;

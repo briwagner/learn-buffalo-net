@@ -11,5 +11,12 @@
     <div class="series-body ui segment">
       {{ .Content }}
     </div>
+
+    {{ $next := add .Params.step 1 }}
+    {{ range where .Site.Menus.series "Weight" $next }}
+      <div class="ui basic right aligned segment">
+        <a href="{{.URL}}" title="{{.Name}}">Next: {{.Name}}</a>
+      </div>
+    {{ end }}
   </div>
 {{ end }}
