@@ -1,0 +1,22 @@
+.series-body {
+
+  ul {
+    margin: 1.5em 0;
+  }
+
+  li {
+    margin: 0.65em 0;
+  }
+
+  code {
+    background-color: #efefef;
+    padding: 0.3em;
+  }
+
+  pre.code-block {
+    background: $tertiary;
+    color: $primary-body;
+    padding: 0.75em;
+    border: 15px solid lighten($color: $tertiary, $amount: 15);
+  }
+}

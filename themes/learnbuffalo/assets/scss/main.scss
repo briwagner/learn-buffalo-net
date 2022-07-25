@@ -3,8 +3,10 @@ $primary-lt: #E3C75F;
 $secondary: #164C45;
 $tertiary: #16232E;
 
+$primary-body: lighten($color: $primary, $amount: 40%);
+
 body {
-  background-color: lighten($color: $primary, $amount: 40%);
+  background-color: $primary-body;
   font-family: 'Lato', sans-serif;
   font-size: 18px;
   color: black;
@@ -22,7 +24,7 @@ a {
 }
 
 p {
-  line-height: 1.5rem;
+  line-height: 1.8rem;
 }
 
 .text-right {
@@ -89,7 +91,6 @@ p {
   color: $tertiary;
   margin: 2rem 0;
   line-height: 1.75rem;
-  max-width: 45rem;
 }
 
 .series-li {
@@ -140,3 +141,5 @@ a.link-border {
   background-color: $tertiary;
   color: white;
 }
+
+@import "content";

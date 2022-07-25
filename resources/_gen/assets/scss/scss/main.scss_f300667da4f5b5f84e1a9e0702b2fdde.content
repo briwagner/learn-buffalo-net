@@ -13,7 +13,7 @@ a {
     text-decoration: underline; }
 
 p {
-  line-height: 1.5rem; }
+  line-height: 1.8rem; }
 
 .text-right {
   text-align: right;
@@ -62,8 +62,7 @@ p {
 .section-title {
   color: #16232E;
   margin: 2rem 0;
-  line-height: 1.75rem;
-  max-width: 45rem; }
+  line-height: 1.75rem; }
 
 .series-li h2 {
   margin: 8px 0 0; }
@@ -98,3 +97,19 @@ a.link-border {
   border-top: 3px solid #CC8D1A;
   background-color: #16232E;
   color: white; }
+
+.series-body ul {
+  margin: 1.5em 0; }
+
+.series-body li {
+  margin: 0.65em 0; }
+
+.series-body code {
+  background-color: #efefef;
+  padding: 0.3em; }
+
+.series-body pre.code-block {
+  background: #16232E;
+  color: #f6e2bc;
+  padding: 0.75em;
+  border: 15px solid #2f4a62; }
