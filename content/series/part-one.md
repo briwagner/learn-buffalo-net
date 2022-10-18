@@ -15,6 +15,12 @@ This lesson will introduce you to the Buffalo framework, create a new project, a
 * have some familiarity with entering commands in the terminal
 * install a code editor to modify files
 
+## Resources
+
+<p><a href="https://www.youtube.com/watch?v=1mXWtP3EkLk&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=1" class="link-border">Watch the video walkthrough</a></p>
+
+<p><a href="https://github.com/briwagner/learn-buffalo/tree/part-1" class="link-border">View the code</a></p>
+
 ## What is Buffalo?
 
 Buffalo is an open-source framework written in Golang. It's not one single package, it's really a whole suite of tools that can be used individually or in combination to build web applications. Some of these packages were created by the Buffalo community and others are managed by others. All together, a Buffalo project allows us to manage the following components:
