@@ -7,7 +7,7 @@ step: 2
 summary: "Create a user model, add fields and methods, and test"
 ---
 
-In this lesson, we will use the Buffalo CLI to generate a User model with custom some fields, write some methods for User, and begin writing tests with the Buffalo test suite.
+In this lesson, we will use the Buffalo CLI to generate a User model with custom fields, write some methods for User, and begin writing tests with the Buffalo test suite.
 
 ## Prerequisites
 
