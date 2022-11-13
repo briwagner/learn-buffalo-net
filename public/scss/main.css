@@ -98,18 +98,20 @@ a.link-border {
   background-color: #16232E;
   color: white; }
 
-.series-body ul {
-  margin: 1.5em 0; }
-
-.series-body li {
-  margin: 0.65em 0; }
-
-.series-body code {
-  background-color: #efefef;
-  padding: 0.3em; }
-
-.series-body pre.code-block {
-  background: #16232E;
-  color: #f6e2bc;
-  padding: 0.75em;
-  border: 15px solid #2f4a62; }
+.ui.segment.series-body {
+  padding-right: 2em;
+  padding-left: 2em; }
+  .ui.segment.series-body ul {
+    margin: 1.5em 0; }
+  .ui.segment.series-body li {
+    margin: 0.25em 0;
+    line-height: 1.8rem; }
+  .ui.segment.series-body code {
+    background-color: #efefef;
+    padding: 0.3em; }
+  .ui.segment.series-body pre.code-block {
+    background: #16232E;
+    color: #f6e2bc;
+    padding: 0.75em;
+    border: 15px solid #2f4a62;
+    overflow: scroll; }
