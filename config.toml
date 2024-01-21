@@ -2,7 +2,9 @@ languageCode = 'en-us'
 title = 'Learn Buffalo'
 theme = 'learnbuffalo'
 [markup]
-  defaultMarkdownHandler = "blackfriday"
+  defaultMarkdownHandler = "goldmark"
+[markup.goldmark.renderer]
+  unsafe = true
 [menu]
 [[menu.main]]
   name = "Home"
