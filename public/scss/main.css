@@ -19,6 +19,15 @@ p {
   text-align: right;
   display: block; }
 
+div.ui.segment {
+  margin: 1.5em 0;
+  padding-bottom: 0.5em; }
+  div.ui.segment h2, div.ui.segment h3, div.ui.segment h4, div.ui.segment h5 {
+    margin: 0.5em 0; }
+  div.ui.segment.blockquoted {
+    border-left: 15px solid #E3C75F;
+    margin-right: 2em; }
+
 .header {
   background-color: #16232E;
   color: white;
@@ -100,6 +109,7 @@ a.link-border {
 
 .ui.segment.series-body {
   padding-right: 2em;
+  padding-bottom: 3em;
   padding-left: 2em; }
   .ui.segment.series-body ul {
     margin: 1.5em 0; }

@@ -8,6 +8,24 @@
     <language>en-us</language>
     <lastBuildDate>Sun, 27 Feb 2022 21:28:24 -0600</lastBuildDate><atom:link href="/recipe/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>JavaScript Doesn&#39;t Have to Be Hard: htmx Integration</title>
+      <link>/recipe/htmx-integration/</link>
+      <pubDate>Sun, 14 Jan 2024 14:54:44 -0600</pubDate>
+      
+      <guid>/recipe/htmx-integration/</guid>
+      <description>The htmx library is JavaScript made easy, providing out-of-the-box interactions with Buffalo or any web app</description>
+    </item>
+    
+    <item>
+      <title>Integrate VueJS</title>
+      <link>/recipe/integrate-vuejs/</link>
+      <pubDate>Wed, 03 Jan 2024 18:27:04 -0600</pubDate>
+      
+      <guid>/recipe/integrate-vuejs/</guid>
+      <description>Add VueJS components to your Buffalo site for interactive and dynamic pages</description>
+    </item>
+    
+    <item>
       <title>Connect to Mongodb</title>
       <link>/recipe/connect-to-mongodb/</link>
       <pubDate>Tue, 01 Mar 2022 20:24:36 -0600</pubDate>

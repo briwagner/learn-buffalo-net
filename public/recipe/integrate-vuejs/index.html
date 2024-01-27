@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html><head>
+  <title>Learn Buffalo</title>
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  
+  
+  
+  <link href="/grid.css" rel="stylesheet" />
+  
+  <link href="/container.css" rel="stylesheet" />
+  
+  <link href="/menu.css" rel="stylesheet" />
+  
+  <link href="/segment.css" rel="stylesheet" />
+  
+  <link href="/item.min.css" rel="stylesheet" />
+
+  <link href="/scss/main.css" rel="stylesheet" />
+</head>
+<body><div class="header">
+  <div class="ui container">
+    <div class="header-slug">Learn Buffalo</div>
+  </div>
+</div>
+
+<div class="ui menu main-menu">
+  <div class="ui container main-nav">
+    
+      <a href="/" class="item">Home</a>
+    
+      <a href="/series" class="item">Series</a>
+    
+      <a href="/recipe" class="item">Recipes</a>
+    
+      <a href="/about" class="item">About</a>
+    
+  </div>
+</div><div id="content" class="ui container">
+  <div class="page-title">
+    <h1>Integrate VueJS</h1>
+  </div>
+
+  <div class="series-body ui segment">
+    <p>It&rsquo;s very common to see JavaScript tools like <a href="https://vuejs.org">VueJS</a> or <a href="https://react.dev">React</a> in use on the frontend of many websites today. JS components can help bring dynamic and interactive experiences for users. When it comes to integrating those tools with Buffalo, what does that look like?</p>
+<p>This recipe looks at two ways to integrate VueJS components with a Buffalo site. Both involve using Buffalo to generate HTML pages that embed Vue components.</p>
+<h2 id="what-are-we-building-event-planner-app">What Are We Building: Event Planner app</h2>
+<p>The Event Planner app allows registered users to create events with a title, description and date. Anonymous users can register for any event, using their email. The event detail page shows a list of guests who have registered.</p>
+<p>So, using Buffalo tools, we create a site with the following pieces:</p>
+<ul>
+<li>events page with a static list of items</li>
+<li>event detail page with a plain HTML form, for guest registration</li>
+<li>guest registration form sends a POST request and reloads the page with the newly rebuilt list of guests</li>
+</ul>
+<p>From our starting point above, we will add some VueJS components.</p>
+<ol>
+<li>The event list page would be more useful with a search-by-title function</li>
+<li>Validation for the guest-registration is quicker if it happens in the browser without hitting the server</li>
+<li>After submitting the form, our changes load faster if we don&rsquo;t reload the entire page, showing a success/error message instead</li>
+</ol>
+<div class="ui segment secondary">
+<h3>Resources</h3>
+<p>Project code is here: <a href="https://github.com/briwagner/buffalo-vue-integration">Buffalo Vue Integration</a></p>
+<p>This was built with Buffalo version 18.14. It was also built with a <a href="https://github.com/briwagner/buffalo-auth">version of the Buffalo Auth plugin</a>.</p>
+<p><strong>Note</strong>: this app was built with Webpack disabled, just to simplify the examples. The main Buffalo template `application.plush.html` includes a script tag to download VueJS and Axios from a CDN. There is benefit to using Webpack's bundling in a production app, but it would change some of the setup used here.</p>
+</div>
+<div class="ui segment red">
+<h3>Multiple Servers, Decoupled Frontend and Backend, etc.</h3>
+<p>On large-scale projects, it's very common to see fully decoupled sites, where a JavaScript-driven frontend is delivered on one server, and the backend data is served on another. In this case, the development and deployment of each stack is often independent of the other. A framework like Buffalo doesn't have any magic to make that easier. Those types of decoupled projects involve special server configuration, in part to satisfy CORS policies. Those topics go beyond learning Buffalo, so we aren't discussing that here.</p>
+</div>
+<h2 id="buffalo-serves-everything">Buffalo Serves Everything</h2>
+<p><em>Who is this for?</em></p>
+<p>Let&rsquo;s imagine you&rsquo;re a solo developer and you need to get this project working quickly. You don&rsquo;t want to build a decoupled site and manage two servers and two build systems. Or you don&rsquo;t want to set up special server configuration needed for two-lane traffic to your site.</p>
+<p>You decide to build one Buffalo app to host everything. Let&rsquo;s go!</p>
+<h3 id="vue-component-uses-json-data-on-the-page">Vue component uses JSON data on the page</h3>
+<p>For many websites with JavaScript frontends, JSON data is the foundation for these components. Often, that data comes from HTTP requests to dedicated endpoints that serve only JSON data. But &hellip; it doesn&rsquo;t have to be that way. Especially for data that doesn&rsquo;t change so frequently, loading it along with the rest of the HTML page data works just fine.</p>
+<p>Take our list page of events. Right now it shows a short version of each event &ndash; including the title and date &ndash; with a link to the detail page. If we convert it to a VueJS component, we can make it interactive by adding a filter box.</p>
+<p>The controller for the list page queries the database for the events and passes that to the template:</p>
+<p>File: <code>actions/events.go</code></p>
+<pre class="code-block">
+  
+// EventsListHandler returns GET for list of all events.
+func EventsListHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	events := models.Events{}
+
+	err := tx.All(&amp;events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	c.Set(&#34;events&#34;, events)
+	return c.Render(http.StatusOK, r.HTML(&#34;events/all&#34;))
+}
+</pre>
+<p>So instead of passing the slice of Event structs, we can marshal to JSON and pass that string to the page template. Now instead of making a separate HTTP call for that data, it&rsquo;s loaded on the page, where the user can&rsquo;t see it but our Vue component can.</p>
+<pre class="code-block">
+  
+// EventsListHandler returns GET for list of all events.
+func EventsListHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	events := models.Events{}
+
+	err := tx.All(&amp;events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	// Marshal to JSON so the Vue app can read it.
+	data, err := json.Marshal(events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+	c.Set(&#34;events&#34;, string(data))
+	return c.Render(http.StatusOK, r.HTML(&#34;events/all&#34;))
+}
+</pre>
+<p>What does that look like in the template? A couple things to keep in mind:</p>
+<ul>
+<li>wrap the JSON string in a script tag</li>
+<li>use the Buffalo helper <code>toJSON</code>, so it properly escapes the quotation marks</li>
+<li>make sure the JSON string is loaded on the page <em>before</em> the component (eventList.js) that relies on this data</li>
+</ul>
+<p><code>templates/events/all.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;script&gt;
+  let eventList = &lt;%= toJSON(events) %&gt;
+&lt;/script&gt;
+
+&lt;%= javascriptTag(&#34;eventList.js&#34;) %&gt;
+</pre>
+<p>Now let&rsquo;s shift to our Vue component. First, the component&rsquo;s <code>mounted()</code> stage will look for a variable called <code>eventList</code>. Then call <code>JSON.parse()</code> to turn a string back into a JSON object, and finally output an array of event objects that Vue can manipulate.</p>
+<p><code>public/assets/eventList.js</code></p>
+<pre class="code-block">
+  
+  ...
+  data() {
+    return {
+      events: [],
+    }
+  },
+  ...
+  mounted() {
+    let events = [];
+    const data = JSON.parse(eventList)
+    if (!Array.isArray(data)) {
+      console.log(&#34;not an array&#34;)
+    }
+    else {
+      for (let i = 0; i &lt; data.length; i++) {
+        let d = new Date(data[i].Date).toLocaleDateString(&#39;en-us&#39;, {
+          year: &#39;numeric&#39;,
+          month: &#39;short&#39;,
+          day: &#39;numeric&#39;,
+          hour: &#39;2-digit&#39;,
+          minute: &#39;2-digit&#39;
+        })
+        const item = {
+          Title: data[i].Title,
+          Link: &#34;/events/&#34; + data[i].id,
+          EventDate: d
+        }
+        events.push(item)
+      }
+
+      this.events = events;
+    }
+  },
+
+</pre>
+<p>The <a href="https://github.com/briwagner/buffalo-vue-integration/blob/master/public/assets/eventList.js">full example is here</a>, including the template and the filtering method. Our focus on this site is Buffalo, so we won&rsquo;t spend much time explaining VueJS.</p>
+<p><strong>What have we done?</strong></p>
+<p>On a single page request, we have loaded our data payload along with a JavaScript component, and some HTML elements. No extra requests are needed, and this page is self-contained in a way that allows it to be stored in a page-cache, if we have one.</p>
+<h3 id="vue-component-fetches-json-from-a-backend-route">Vue component fetches JSON from a backend route</h3>
+<p>Let&rsquo;s modify our Vue components to fetch data from an HTTP endpoint instead of reading it from the server-rendered page. Our first step is to add the ability to make HTTP requests, and for that we&rsquo;ll add the <a href="https://axios-http.com/docs/intro">Axios library</a> to our project. One simple way is to link to a CDN in our page template <code>templates/application.plush.html</code>. Another option is to use <a href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API">Fetch API</a>.</p>
+<p>Where is that data going to come from now? We&rsquo;ll need to add routes to our Buffalo app that serve only the JSON data we need.</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+// EventsListHandler returns JSON list of all events.
+func EventsListJSONHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	events := models.Events{}
+
+	err := tx.All(&amp;events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	// r.JSON handles Marshal for us.
+	return c.Render(http.StatusOK, r.JSON(events))
+}
+
+</pre>
+<p>Add a line in <code>actions/app.go</code> to serve this handler on the path for <code>events/json</code>. And this is all we need to send JSON data from Buffalo. But in our case, we already have a route that returns a list of Events, even though it&rsquo;s in HTML. Can we re-use it? Yes!</p>
+<p>Buffalo controllers allows us to respond to different kinds of requests, by checking the &ldquo;content-type&rdquo; on the request. So instead of adding a new route, we could add some logic in our existing controller so that it satisfies both needs at the <code>/events</code> path.</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+// EventsListHandler returns GET for list of all events.
+func EventsListHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	events := models.Events{}
+
+	err := tx.All(&amp;events)
+	if err != nil {
+		log.Print(err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+  // Check request type.
+	ct, _ := c.Value(&#34;contentType&#34;).(string)
+	if ct == &#34;application/json&#34; {
+		return c.Render(http.StatusOK, r.JSON(events))
+	}
+  ...
+  // Continue to render HTML as before.
+}
+
+</pre>
+<p>Ok, so the Buffalo route is ready. Now let&rsquo;s modify our VueJS component to fetch that data via HTTP request, and not expect to find it on the page. We&rsquo;ll create a new version of the component which is served at the <code>/events-remote</code> path of our app. Much of the code is the same, except where we fetch data and parse it into Event objects.</p>
+<p><code>public/assets/eventListRemote.js</code></p>
+<pre class="code-block">
+  
+  methods: {
+    async getEvents() {
+      const resp = fetch(&#39;/events/&#39;, {headers: {&#39;Content-Type&#39;: &#39;application/json&#39;}});
+      return (await resp).json();
+    }
+  },
+  async mounted() {
+    let events = [];
+    let data = [];
+    // Make request to load event list.
+    await this.getEvents().then(res =&gt; data = res);
+    ...
+  }
+
+</pre>
+<p>Notice how we have to use <code>async</code> on the <code>mounted()</code> method so the request is completed with the corresponding <code>await</code>.</p>
+<p>This example uses Fetch API, but Axios would work too. Also notice we are hitting the <code>/events</code> route which is smart enough to know we want JSON back and not an HTML page. But we could also have our component fetch that data from <code>/events/json</code>.</p>
+<h3 id="vuejs-form">VueJS Form</h3>
+<p>Let&rsquo;s combine the ideas above to build a <a href="https://github.com/briwagner/buffalo-vue-integration/blob/master/public/assets/eventForm.js">form to register guests</a> which is available at the <code>/app</code> route. We can use the server to render JSON data on the page, which will build a select list. And with the help of Axios, our Vue component will make a POST request to a custom endpoint. Compared to a server-generated HTML form, there are a couple benefits to using a Vue component for forms:</p>
+<ul>
+<li>greater ability for form validation and user feedback</li>
+<li>eliminate reloading the entire page to display success/error of the request</li>
+</ul>
+<p><strong>Note</strong>: one critical piece for submitting forms with JavaScript components is the <code>authenticity_token</code>. By default, Buffalo expects all forms to have that token set with the <a href="https://github.com/gobuffalo/mw-csrf">CSRF package</a> &ndash; something that Buffalo forms does for you. You can disable that in Buffalo. Or you can make sure the Vue component grabs the token from the page and includes it in the POST request back to Buffalo. Notice how we do that in the <a href="https://github.com/briwagner/buffalo-vue-integration/blob/master/public/assets/eventForm.js">eventForm.js</a>.</p>
+<p><code>public/assets/eventForm.js</code></p>
+<pre class="code-block">
+  
+...
+  data() {
+    return {
+      form: {
+        EventID: &#39;&#39;,
+        FullName: &#39;&#39;,
+        Email: &#39;&#39;,
+        authenticity_token: &#39;&#39;
+      },
+    }
+    ...
+  }
+
+</pre>
+<p>We shadow the elements of the Buffalo form in our <code>data()</code> component state, <em>including</em> the <code>authenticity_token</code>. And in the <code>mounted()</code> stage, we grab it from the server-rendered page.</p>
+<pre class="code-block">
+  
+let tok = document.querySelector(&#39;meta[name=&#34;csrf-token&#34;]&#39;).content;
+this.form.authenticity_token = tok;
+
+</pre>
+<p>In this way, Buffalo gets the token it expects and our request is handled successfully.</p>
+<p>The final piece of this implementation is a custom route that handles the VueJS form structure. This is not necessary, though! If you already have a route that creates a server-side form, and another one that handles the form submission, then you can re-use it. The only requirement is that the structure of your VueJS component should match that of the server-side form.</p>
+<p>For this example, the Vue app submits only the required data to create a guest registration. To handle that simplified structure, we have an AppForm struct in the handler that makes it easy to parse the form data.</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+type AppForm struct {
+	EventID  uuid.UUID `form:&#34;EventID&#34;`
+	FullName string    `form:&#34;FullName&#34;`
+	Email    string    `form:&#34;Email&#34;`
+}
+
+// AppFormHandler responds to POST to add-guest for Vue form.
+func AppFormHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	req := &amp;AppForm{}
+	err := c.Bind(req)
+	if err != nil {
+		log.Printf(&#34;form bind error %s&#34;, err)
+		return c.Render(400, r.String(&#34;form binding error&#34;))
+	}
+
+	event := &amp;models.Event{}
+	err = tx.Find(event, req.EventID)
+	if err != nil {
+		log.Printf(&#34;error finding event&#34;)
+		return c.Render(404, r.String(&#34;event not found &#34;+req.EventID.String()))
+	}
+  ...
+}
+
+</pre>
+<p>Notice in <a href="https://github.com/briwagner/buffalo-vue-integration/blob/master/actions/events.go">events.go</a> that <code>AppFormHandler</code> is the handler for the Vue form submission. It&rsquo;s very similar to the logic and flow of <code>EventAddGuestHandler</code> which handles the server-rendered form. We could go one step farther and move some of that logic into the Events model, or find another method in the actions package to avoid the duplicated code. Work for another day!</p>
+<h2 id="going-further">Going Further</h2>
+<div class="ui segment secondary">
+<p>This example project is fairly simple. What would make it even more useful?</p>
+<ul>
+<li>connect to an email delivery system to send password recovery messages, account confirmation, event reminders, etc.</li>
+<li>add a reminder system</li>
+<li>allow editors to set a limit on the number of reservations</li>
+<li>add a pending/accepted status on Guests, to allow admins to control attendance</li>
+<li>allow guests to login and cancel their registration</li>
+</ul>
+<p>Feel free to take this simple project and make it better!</p>
+</div>
+  </div>
+
+    </div><div class="footer">
+  <div class="ui center aligned basic segment">
+    <p>Copyright 2021-2. All rights reserved.</p>
+  </div>
+</div></body>
+</html>

@@ -49,28 +49,28 @@
     </div>
 
     <div class="series-body ui segment">
-      
-
-<p>This lesson will introduce you to the Buffalo framework, create a new project, add some routes and templates, and generate a binary for the application.</p>
-
+      <p>This lesson will introduce you to the Buffalo framework, create a new project, add some routes and templates, and generate a binary for the application.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-
 <ul>
 <li>install Buffalo according to the official site instructions</li>
 <li>have some familiarity with entering commands in the terminal</li>
 <li>install a code editor to modify files</li>
 </ul>
+<div class="ui segment secondary">
+  <h3>Resources</h3>
+  <p>This was built with Buffalo version 18.14.</p>
 
-<h2 id="resources">Resources</h2>
+  
+    <p><a href="https://www.youtube.com/watch?v=1mXWtP3EkLk&amp;list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&amp;index=1" class="link-border">Watch the video walkthrough</a></p>
+  
 
-<p><a href="https://www.youtube.com/watch?v=1mXWtP3EkLk&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=1" class="link-border">Watch the video walkthrough</a></p>
+  
+    <p><a href="https://github.com/briwagner/learn-buffalo/tree/part-1" class="link-border">Project code</a></p>
+  
 
-<p><a href="https://github.com/briwagner/learn-buffalo/tree/part-1" class="link-border">View the code</a></p>
-
+</div>
 <h2 id="what-is-buffalo">What is Buffalo?</h2>
-
 <p>Buffalo is an open-source framework written in Golang. It&rsquo;s not one single package, it&rsquo;s really a whole suite of tools that can be used individually or in combination to build web applications. Some of these packages were created by the Buffalo community and others are managed by others. All together, a Buffalo project allows us to manage the following components:</p>
-
 <ul>
 <li>database ORM (object relational mapping) with Buffalo Pop</li>
 <li>HTML templates with Plush</li>
@@ -81,154 +81,102 @@
 <li>background tasks</li>
 <li>testing suite</li>
 </ul>
-
-<p>Install Buffalo following the instructions on the official site. Once that&rsquo;s done, we can test some commands in a shell.</p>
-
+<p>Install Buffalo following the <a href="https://gobuffalo.io/documentation/getting_started/installation/">instructions on the official site</a>. Once that&rsquo;s done, we can test some commands in a shell.</p>
 <p><code>buffalo version</code> will display the version number.</p>
-
 <p><code>buffalo</code> with no other argument shows a list of available commands.</p>
-
 <h2 id="step-1-create-a-project">Step 1: Create a project</h2>
-
 <p>Enter <code>buffalo new PROJECT_NAME</code> to generate the skeleton for a new project and begin exploring the files created.</p>
-
 <p>Buffalo uses Go modules to manage dependencies, so one of the first files to notice is <code>go.mod</code> in the root of the project. If you see any packages that are missing, try typing <code>go mod tidy</code> in your terminal to resolve those dependencies.</p>
-
 <p>Your new project includes a README.md file in the root which includes a lot of handy instructions about how to get started building an app. This includes how to add custom settings or overrides in two files in your new project:</p>
-
 <ul>
 <li><code>database.yml</code>: holds database credentials</li>
 <li><code>.env</code>: add other environment settings, like custom HTTP port settings, or global variables</li>
 </ul>
-
 <h3 id="model-view-controller">Model, View, Controller</h3>
-
 <p>Buffalo shares the MVC pattern that is used by other frameworks like Ruby on Rails, Angular and others. This is a way to describe the three separate parts of the application, and help understand the different responsibilities they have.</p>
-
 <p><strong>Model</strong> refers to the data structures and, often, how they are stored in a database. For example, a User model may have fields like email, name and ID, which are stored in one or more database tables. The Model portion is contained in the <code>models/</code> directory, where you will see several files included in a new app.</p>
-
 <p><strong>View</strong> is the part of the application that end-users will experience, most likely in the form of HTML page content. The pieces related to View live in the <code>templates/</code> directory.</p>
-
 <p><strong>Controller</strong> sits in the middle, taking user requests and matching it to data managed by the application. This is where much of the application logic resides, helping us to manage dynamic data. And <code>actions/</code> is the folder that holds our Controllers, including the main logic file for any Buffalo app, the <code>app.go</code> file.</p>
-
 <h2 id="step-2-start-a-dev-server">Step 2: Start a Dev Server</h2>
-
 <p>From your terminal, enter <code>buffalo dev</code> to start a dev server that rebuilds the app as we work. The Buffalo engine will try to serve the app on the default port of 3000, which you can view in a web browser on your dev machine. If you have something else running on that port, you will see an error message in the terminal and the app will be unavailable. Open the <code>.env</code> file and add a line like <code>PORT=3022</code>, for example, to serve the app on another port.</p>
-
 <p>If you followed the instructions in the README.md about creating a database and adding those credentials to your <code>database.yml</code> file, then you should see the start page in your browser. Hooray!</p>
-
 <p>If not, you will see an error page. That&rsquo;s because Buffalo tries to maintain a database transaction for every page request it receives. Since Buffalo cannot connect to a database, it throws an error. To overcome this for now, look in the <code>actions/app.go</code> file for this line:</p>
-
 <p><code>app.Use(popmw.Transaction(models.DB))</code></p>
-
 <p>Delete it for now, or convert into a comment by adding two &ldquo;/&rdquo; characters.</p>
-
 <p><code>// app.Use(popmw.Transaction(models.DB))</code></p>
-
 <p>Now Buffalo will not create that database transaction on every page request.</p>
-
 <h2 id="step-3-create-a-custom-route">Step 3: Create a Custom Route</h2>
-
 <p>Look at that <code>actions/app.go</code> file again to see the default route: <code>app.GET(&quot;/&quot;, HomeHandler)</code>. This syntax means our app takes a &ldquo;GET&rdquo; request to the root location and passes it off to an HTTP handler function that is called <code>HomeHandler</code>. By default, that handler is defined in another file in the <code>actions/</code> directory. It doesn&rsquo;t really matter which file, just that it resides in the <code>actions</code> package.</p>
-
 <p>Let&rsquo;s add a new route in the <code>app.go</code> file, similar to the one above. Define a path like <code>/about</code> and provide a named handler that matches well with the path, something like <code>AboutHandler</code>.</p>
-
 <p>Next, define that handler in the <code>actions/home.go</code> file, where the original <code>HomeHandler</code> function resides. If you&rsquo;re familiar with HTTP handler functions in Go, then Buffalo handlers may look a bit different. That&rsquo;s because Buffalo has a special Context type that manages the initial request and parameters, as well as the response and other values.</p>
-
 <pre class="code-block">
 func AboutHandler(c buffalo.Context) error {
-    fmt.Println(c.Request().URL)    // => "/about/"
-    fmt.Println(c.Request().Method) // => "GET"
+	fmt.Println(c.Request().URL)    // => "/about/"
+	fmt.Println(c.Request().Method) // => "GET"
 
-    c.Set("title", "About page")
-    c.Set("content", "This is the about page.")
-    return c.Render(http.StatusOK, r.HTML("about.html"))
+	c.Set("title", "About page")
+	c.Set("content", "This is the about page.")
+	return c.Render(http.StatusOK, r.HTML("about.html"))
 }
 </pre>
-
 <p>See above how we can retrieve values from the context, and set values, like data retrieved from a database or an API request. These values are then available to the next HTTP handler, on in this case, passed to an HTML template. The Buffalo context also has methods! Just like with <code>HomeHandler</code>, we return the context, calling the <code>Render()</code> function, including the name of an HTML template file.</p>
-
 <p><em>So where is that template?</em></p>
-
 <p>Create a new file in templates: <code>about.plush.html</code>. Here we can write HTML, or use Plush syntax to print or process data from the context. The syntax is different from the Go standard library, but the basics are the same.</p>
-
 <pre class="code-block">
 &lt;h1&gt;<%= title %>&lt;/h1&gt;
 &lt;p&gt;<%= content %>&lt;/p&gt;
 </pre>
-
 <h2 id="step-4-create-a-dynamic-route">Step 4: Create a Dynamic Route</h2>
-
 <p>Let&rsquo;s take our routes one step further and make a <em>dynamic route</em>. What does that mean? It&rsquo;s when we define a placeholder in the URL that we expect to have any number of values, something like <code>/user/1</code>, <code>/user/2</code>, <code>/user/3</code>. The &ldquo;/user&rdquo; portion doesn&rsquo;t change but the ID does.</p>
-
 <p>Let&rsquo;s create that route and add a handler. Now our <code>app.go</code> file looks like this:</p>
-
 <pre class="code-block">
     app.GET("/", HomeHandler)
     app.GET("/about", AboutHandler)
     app.GET("/user/{user_id}", UserHandler)
 </pre>
-
 <p>The next step is to build out our handler where we will have some code to process the dynamic value <code>user_id</code>. For simplicity, we can add to the existing <code>actions/home.go</code> file, or feel free to create a file called <code>actions/user.go</code>.</p>
-
 <pre class="code-block">
 type User struct {
-    ID        int    `json":id"`
-    Email     string `json:"email"`
-    FirstName string `json:"first_name"`
-    LastName  string `json:"last_name"`
+	ID        int    `json":id"`
+	Email     string `json:"email"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
 }
 
 func UserHandler(c buffalo.Context) error {
-    user_id := c.Param("user_id")
-    user, err := getUserInfo(user_id)
-    if err != nil {
-        c.Flash().Add("warning", "Bad connection")
-        c.Redirect(301, "/")
-    }
-    c.Set("user", user)
-    return c.Render(http.StatusOK, r.HTML("user.html"))
+	user_id := c.Param("user_id")
+	user, err := getUserInfo(user_id)
+	if err != nil {
+		c.Flash().Add("warning", "Bad connection")
+		c.Redirect(301, "/")
+	}
+	c.Set("user", user)
+	return c.Render(http.StatusOK, r.HTML("user.html"))
 }
 </pre>
-
 <p>There&rsquo;s a gotcha here. I have a mystery function, <code>getUserInfo</code> that fetches data for the user ID. It could be from a database or some third-party service, but let&rsquo;s not worry about that. Assume we get a <code>User</code> struct and an error back from it. A check of the error allows us to process a redirect, or we can set this new value on the context and render an HTML page.</p>
-
 <p>Again, notice that Buffalo context is doing a lot of work here. We get the <code>user_id</code> from the context &ndash; the variable name here should match the one we define in the route definition. And the redirect is actually a method called on the context.</p>
-
 <p>File: <code>templates/user.plush.html</code></p>
-
 <pre class="code-block">
 &lt;h1&gt;<%= user.FirstName %> <%= user.LastName %>&lt;/h1&gt;
 &lt;p&gt;<%= user.ID %>&lt;/p&gt;
 &lt;p&gt;<%= user.Email %>&lt;/p&gt;
 </pre>
-
 <p>More about Plush syntax: @todo add link</p>
-
 <p>One final thing about HTML templates. The default app provides a partial template <code>templates/_flash.plush.html</code>, which is used to show user-specific messages. This is a pattern you may have seen with other web frameworks. We can add a flash message to a page response with the <code>c.Flash().Add()</code> method as we show above. The first parameter in that method is the message status (e.g. &ldquo;warning&rdquo;, &ldquo;notice&rdquo;), an arbitrary string that can help control how messages are displayed. The default templates are designed to work with Bootstrap classes @todo: add list of class names. But you can create your own status levels and modify this template however you want.</p>
-
 <p>Bootstrap flash message @todo add link</p>
-
 <h2 id="step-5-build-our-app">Step 5. Build our App</h2>
-
 <p>The final step is to prepare our application for the real world. Since Go applications are compiled ahead of time, we need to do that here and we&rsquo;ll use the Buffalo CLI to do it. From the root of your project, type this in your terminal: <code>buffalo build</code></p>
-
 <p>This command will use the default settings (&ldquo;development&rdquo; environment) and generate a binary in the <code>bin/</code> directory. The binary contains all the logic, templates and front-end assets needed for our app to run. There are some helpful flags available to <code>build</code> as well:</p>
-
 <ul>
 <li><code>--environment &lt;string&gt;</code>: target a different environment, e.g. test, production</li>
 <li><code>--clean-assets</code>: reduce the binary&rsquo;s file size by deleting stale files generated previously by Webpack</li>
 <li><code>-o &lt;string&gt;</code>: specify the name of the binary, e.g. myapp-v1.0, else it uses the project name</li>
 </ul>
-
 <p>One thing that <em>does not happen</em> with the build command is adding the environment variables we may have used during development. If we need to add the same ENV vars or create new ones, we must create a new file called <code>.env</code> in the same directory as the binary. When the binary starts, it will look for that file and apply those variables to the application. (There are other ways to run the Go binary and pass ENV variables, which we discuss in later lessons.)</p>
-
 <p>Now, let&rsquo;s see if the app works! From the project root, type <code>./bin/&lt;appname&gt;</code> and the app should start up. Or change directories into <code>bin/</code> and run the app: <code>cd bin &amp;&amp; ./&lt;appname&gt;</code></p>
-
 <h2 id="review">Review</h2>
-
 <p>This walkthrough covered a lot of ground:</p>
-
 <ol>
 <li>basics of MVC web applications</li>
 <li>create a new Buffalo project</li>
@@ -238,13 +186,9 @@ func UserHandler(c buffalo.Context) error {
 <li>run a dev server</li>
 <li>generate a production binary</li>
 </ol>
-
 <p>This is just a start. In other lessons, we&rsquo;ll work on connecting to a database, creating models to handle data, writing tests, and making more HTML templates.</p>
-
 <p><a href="https://www.youtube.com/watch?v=1mXWtP3EkLk&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=1" class="link-border">Watch the video</a></p>
-
 <p><a href="https://github.com/briwagner/learn-buffalo/tree/part-1" class="link-border">View the code</a></p>
-
     </div>
 
     

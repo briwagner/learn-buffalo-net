@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html><head>
+  <title>Learn Buffalo</title>
+  <meta name="MobileOptimized" content="width" />
+  <meta name="HandheldFriendly" content="true" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  
+  
+  
+  <link href="/grid.css" rel="stylesheet" />
+  
+  <link href="/container.css" rel="stylesheet" />
+  
+  <link href="/menu.css" rel="stylesheet" />
+  
+  <link href="/segment.css" rel="stylesheet" />
+  
+  <link href="/item.min.css" rel="stylesheet" />
+
+  <link href="/scss/main.css" rel="stylesheet" />
+</head>
+<body><div class="header">
+  <div class="ui container">
+    <div class="header-slug">Learn Buffalo</div>
+  </div>
+</div>
+
+<div class="ui menu main-menu">
+  <div class="ui container main-nav">
+    
+      <a href="/" class="item">Home</a>
+    
+      <a href="/series" class="item">Series</a>
+    
+      <a href="/recipe" class="item">Recipes</a>
+    
+      <a href="/about" class="item">About</a>
+    
+  </div>
+</div><div id="content" class="ui container">
+  <div class="page-title">
+    <h1>JavaScript Doesn&#39;t Have to Be Hard: htmx Integration</h1>
+  </div>
+
+  <div class="series-body ui segment">
+    <p>JavaScript is a key component of any modern web application today. It delivers interactive experiences that are custom-fit for users, but often it comes with a high cost in developer hours. For solo devs or small teams, it can be a challenge to find the right balance between providing enough JS interaction to users, without investing a lot of time and effort.</p>
+<p>The <a href="https://htmx.org/">htmx library</a> tries to find that middle ground, somewhere between a handful of custom scripts and a full framework like Angular, VueJS or React. In the words of the folks behind it:</p>
+<div class="ui raised segment blockquoted">
+<p>htmx gives you access to AJAX, CSS Transitions, WebSockets and Server Sent Events directly in HTML, using attributes, so you can build modern user interfaces with the simplicity and power of hypertext</p>
+</div>
+<p><strong>What does that mean?</strong></p>
+<p>First, htmx is a single script tag on your app. It allows you to add custom attributes to your HTML elements, that can provide <strong>progressive enhancement</strong> for things like links and forms. <em>Say what?</em> That means an HTML element works as normal, but it can do additional things when hooked up with htmx.</p>
+<p>Take a form for example. You have a server-rendered form that makes a POST back to the server, as normal. With htmx, a JS-enabled device can optionally perform that via AJAX and execute some insert or replace behavior on the page.</p>
+<p><strong>What is it NOT?</strong></p>
+<p>Let&rsquo;s compare htmx to other common options, and ponder what is is not. Unlike any JS framework, it does not expect you to rebuild components as a JavaScript template like <a href="https://legacy.reactjs.org/docs/introducing-jsx.html">React&rsquo;s JSX</a>.</p>
+<p>It does not mean that, without a JavaScript-enabled device, your application is non-functional. It does not require bundling or compilation. <em>Not this time Webpack!</em> And most importantly it does not require you to send JSON objects back and forth to the server.</p>
+<p><strong>Don&rsquo;t send JSON back and forth</strong></p>
+<p>The last point is a really big one for any project with server-generated pages, where templates are written in Buffalo&rsquo;s plush, Go HTML templates, PHP, Ruby, or any other language. Too often it&rsquo;s the case where adding a JS framework means replicating a whole bunch of templates into Javascript. That is a nightmare for consistency and support.</p>
+<p>Instead, htmx expects your server to send back fragments of HTML that can be inserted or replaced with no extra logic. So the markup is still done on the server.</p>
+<p>If you&rsquo;ve used the <a href="https://www.drupal.org/docs/develop/drupal-apis/ajax-api">AJAX API in Drupal</a>, or <a href="https://hotwired.dev/">Hotwired</a>, you will be familiar with some of these concepts. The ideal project for htmx is one with server-generated pages that would benefit from AJAX behaviors.</p>
+<p><strong>So this is modern JQuery?</strong></p>
+<p>No. htmx is not layering JavaScript on top of HTML pages, rather it tries to leverage the original idea of HTML as hypertext to create new interactions. (Their words, not mine.) The API surface area is pretty small compared to jQuery, limiting itself mainly to insert and replace behaviors.</p>
+<h2 id="project-example---event-planner-app">Project Example - Event Planner App</h2>
+<p>Let&rsquo;s take a Buffalo project and see what it takes to extend it with htmx. We&rsquo;ll use our Event Planner app from this <a href="/recipe/integrate-vuejs/">recipe on VueJS</a>. Instead of using Vue, we&rsquo;ll modify the server-generated forms to include htmx-ready attributes.</p>
+<div class="ui segment secondary">
+<h3>Resources</h3>
+<p>Project code is here: <a href="https://github.com/briwagner/buffalo-vue-integration">Buffalo Vue Integration</a>. Be sure to checkout the <code>ajax-htmx</code> branch.</p>
+<p>This was built with Buffalo version 18.14. It was also built with a <a href="https://github.com/briwagner/buffalo-auth">version of the Buffalo Auth plugin</a>.</p>
+</div>
+<h3 id="refactor-1-apply-htmx-to-a-search-form">Refactor 1: Apply htmx to a Search Form</h3>
+<p><strong>Use-case</strong>: we have a list of events, showing the title and date. This list could be long, so the page also has a text box where users enter search terms to filter the list of events. Buffalo renders the list server-side, like so:</p>
+<p><code>templates/events/list-remote.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;div id=&#34;eventListRemote&#34; class=&#34;mt-3&#34;&gt;
+  &lt;ul class=&#34;list-group&#34;&gt;
+    &lt;%= for (event) in events { %&gt;
+      &lt;li class=&#34;list-group-item&#34;&gt;&lt;a href=&#34;&lt;%= event.ToLink() %&gt;&#34;&gt;&lt;%= event.Title %&gt; - &lt;= event.Date.Format(&#34;Jan. 02 2006 3:04 PM MST&#34;) %&gt;&lt;/a&gt;&lt;/li&gt;
+    &lt;% } %&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+
+</pre>
+<p>This will be the default layout when the page loads — the full list. <strong>Note</strong> we have an ID set on this whole element, which will be used by htmx to perform the replacement. So our steps to refactoring are:</p>
+<ul>
+<li>add an input element (or form) for the text search</li>
+<li>tell htmx how to handle this input</li>
+<li>create a Buffalo route to handle the form-submit</li>
+<li>return a HTML-formatted chunk to replace the original list</li>
+</ul>
+<p>So, step one is to add the form. Take note of the <code>hx-*</code> attributes, for example the ID from above is added as the <code>hx-target</code>.</p>
+<p><code>templates/events/list-remote.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;input class=&#34;form-control&#34; type=&#34;search&#34;
+       name=&#34;search&#34;
+       placeholder=&#34;Begin typing to search by event title&#34;
+       hx-post=&#34;/events/search&#34;
+       hx-trigger=&#34;input changed delay:500ms, search&#34;
+       hx-target=&#34;#eventListRemote&#34;
+       hx-vals=&#39;{&#34;authenticity_token&#34;: &#34;&lt;%= authenticity_token %&gt;&#34;}&#39;&gt;
+
+</pre>
+<p>One trick here is to include some extra data in our request, in the form of <code>hx-vals</code>. If you&rsquo;re using the default Buffalo setup, then CSRF-protection is in effect, so any POST request without the authenticity-token will fail. In our case, this page is rendered on the server, so we can write that value to the page using Plush syntax.</p>
+<p>The &ldquo;trigger&rdquo; to htmx is change-detection on the input, with a reasonable delay to allow a user to finish typing something.</p>
+<p>Next, we have now committed to taking requests at the <code>/events/search</code> route, shown in the <code>hx-post</code> attribute above. So let&rsquo;s make that now.</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+type EventSearchForm struct {
+	Title string `form:&#34;search&#34;`
+}
+
+func EventSearchHandler(c buffalo.Context) error {
+	search := EventSearchForm{}
+	err := c.Bind(&amp;search)
+	if err != nil {
+		log.Printf(&#34;form bind error %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	events := &amp;models.Events{}
+	err = events.SearchTitle(tx, search.Title)
+	if err != nil {
+		log.Printf(&#34;error in search %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+	return c.Render(http.StatusOK, r.String(events.ToList()))
+}
+
+</pre>
+<p>In Buffalo, the easy way to accept a form submission is to bind to a struct. This route is used to find an event by using a partial title search. We could try to reuse the Event model but it has a bunch of fields that won&rsquo;t be filled by the form. And the form tag (<code>title</code>) would have to match our search form payload (<code>search</code>). In this case, we use &ldquo;search&rdquo; for the input for semantic reasons on the user&rsquo;s browser.</p>
+<p>The alternative to reusing the Event struct is to create a single-use struct to handle this search request with the exact properties we need: <code>EventSearchForm</code>.</p>
+<p>Next, the search piece is a simple SQL query:</p>
+<p><code>models/event.go</code></p>
+<pre class="code-block">
+  
+func (e *Events) SearchTitle(tx *pop.Connection, s string) error {
+	s = s + &#34;%&#34;
+	err := tx.Where(&#34;title like ?&#34;, s).All(e)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+</pre>
+<p>Final thing to note from our controller above: the return is a string, NOT a full HTML page. Remember that htmx is expecting an HTML fragment to replace the original content on the page; it’s not a full page reload. Let&rsquo;s see how we build that piece, and refactor from the original plush template.</p>
+<p><code>models/event.go</code></p>
+<pre class="code-block">
+  
+func (e Event) EventDate() string {
+	return e.Date.Format(&#34;Jan. 02 2006 3:04 PM MST&#34;)
+}
+
+func (e Event) ToListItem() string {
+	return &#34;&lt;li&gt;&lt;a href=&#39;/events/&#34; + e.ID.String() + &#34;&#39;&gt;&#34; + e.Title + &#34;&lt;/a&gt; &amp;mdash; &#34; + e.EventDate() + &#34;&lt;/li&gt;&#34;
+}
+
+func (e Events) ToList() string {
+	var b strings.Builder
+	b.WriteString(&#34;&lt;ul&gt;&#34;)
+	for _, ev := range e {
+		b.WriteString(ev.ToListItem())
+	}
+	b.WriteString(&#34;&lt;/ul&gt;&#34;)
+	return b.String()
+}
+
+</pre>
+<p>We already had <code>ToLink</code> to facilitate getting the relative url as a string. Now our model has even more helper functions to output formatted field content. These new methods do the same work that was happening in our html templates. That seems redundant, but we cannot re-use those templates for htmx, since we only want portions of them. Instead we can refactor those templates to use these methods.</p>
+<p><code>templates/events/list-remote.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;div id=&#34;eventListRemote&#34; class=&#34;mt-3&#34;&gt;
+  &lt;%= raw(events.ToList()) %&gt;
+&lt;/div&gt;
+
+</pre>
+<p>The template is much simpler. It may feel strange to have a bunch of model methods that return strings, and put markup in these struct methods. But I think it&rsquo;s fair to apply the mindset of component-based design. In that sense, these methods are used to generate building blocks that can be put together in different patterns for the user. This approach is really key to allow us to satisfy the needs of htmx and the server-side templates, and avoid duplicated code.</p>
+<h3 id="refactor-2-modify-a-form-submit">Refactor 2: Modify a Form Submit</h3>
+<p>Let&rsquo;s talk progressive enhancement!</p>
+<p><strong>Use-case</strong>: we have a form on the event detail page. It shows event details, a list of registered guests, and a form to add another guest. This form takes email and a full-name, email, and when the user clicks submit, the POST is sent with a full-page reload.</p>
+<p>The current form uses the Plush <code>form_for</code> builder:</p>
+<p><code>templates/events/_add-guest-form.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;%= form_for(guest, {action: eventAddGuestPath({id: event.ID})}) { %&gt;
+  &lt;%= f.InputTag(&#34;Email&#34;) %&gt;
+  &lt;%= f.InputTag(&#34;FullName&#34;) %&gt;
+  &lt;%= f.SubmitTag(&#34;Reserve a spot&#34;) %&gt;
+&lt;% } %&gt;
+
+</pre>
+<p>If you want to build the form yourself, or see the generated form content, it&rsquo;s here:</p>
+<pre class="code-block">
+  
+&lt;form action=&#34;/events/3dfb3b98-49d6-4861-b7f7-e272bc99dbd4/add-guest/&#34; id=&#34;guest-form&#34; method=&#34;POST&#34;&gt;
+
+  &lt;input name=&#34;authenticity_token&#34; type=&#34;hidden&#34; value=&#34;3DndjXmBr4ibBPw/uXmYXez8NcqonXKNFk2h+2GsK9GdZ7y+JiJaMPLzphyhLhbuEpv2hJoXdWv2RB1cm2MPng==&#34; /&gt;
+
+  &lt;div class=&#34;form-group&#34;&gt;
+    &lt;label class=&#34;form-label&#34; for=&#34;guest-Email&#34;&gt;Email&lt;/label&gt;
+    &lt;input class=&#34;form-control&#34; id=&#34;guest-Email&#34; name=&#34;Email&#34; type=&#34;text&#34; value=&#34;&#34; /&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&#34;form-group&#34;&gt;
+    &lt;label class=&#34;form-label&#34; for=&#34;guest-FullName&#34;&gt;Full Name&lt;/label&gt;
+    &lt;input class=&#34;form-control&#34; id=&#34;guest-FullName&#34; name=&#34;FullName&#34; type=&#34;text&#34; value=&#34;&#34; /&gt;
+  &lt;/div&gt;
+
+  &lt;input type=&#34;submit&#34; value=&#34;Reserve a spot&#34; /&gt;
+&lt;/form&gt;
+
+</pre>
+<p>What do we see? That authenticity token is there. The action is set to a path our Buffalo handlers will understand. A traditional html form.</p>
+<p>How we do make it work with htmx? Only one change is needed here to add the AJAX behavior, using the <code>hx-post</code> attribute.</p>
+<pre class="code-block">
+  
+&lt;%= form_for(guest, {
+    action: eventAddGuestPath({id: event.ID}),
+    hx-post: eventAddGuestPath({id: event.ID})
+  }) { %&gt;
+  &lt;%= f.InputTag(&#34;Email&#34;) %&gt;
+  &lt;%= f.InputTag(&#34;FullName&#34;) %&gt;
+  &lt;%= f.SubmitTag(&#34;Reserve a spot&#34;) %&gt;
+&lt;% } %&gt;
+
+</pre>
+<p>In the rendered form that looks like this:</p>
+<pre class="code-block">
+  
+&lt;form action=&#34;/events/3dfb3b98-49d6-4861-b7f7-e272bc99dbd4/add-guest/&#34;
+      hx-post=&#34;/events/3dfb3b98-49d6-4861-b7f7-e272bc99dbd4/add-guest/&#34;
+      id=&#34;guest-form&#34;
+      method=&#34;POST&#34;&gt;
+...
+
+</pre>
+<p>The <code>form_for()</code> helper allows us to pass other attributes to the form, e.g. data-prop-one, hx-post, etc. That <code>hx-post</code> attribute takes the same path we use for the normal form submission. (Or add a different one for some custom AJAX behavior.) The default &ldquo;swap&rdquo; behavior for htmx is to replace the form contents with the returned HTML fragment. So the form fields are removed and we can replace it with a status message. Let&rsquo;s do that in the controller:</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+// EventAddGuestHandler responds to POST to create add-guest.
+func EventAddGuestHandler(c buffalo.Context) error {
+	tx := c.Value(&#34;tx&#34;).(*pop.Connection)
+	event := &amp;models.Event{}
+	eventID := c.Param(&#34;id&#34;)
+
+	// Find and validate event.
+	err := tx.Find(event, eventID)
+	if err != nil {
+		log.Printf(&#34;event error %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	// Find and validate guest.
+	guest := &amp;models.Guest{}
+	err = c.Bind(guest)
+	if err != nil {
+		log.Printf(&#34;form error %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	foundGuest := &amp;models.Guest{}
+	err = tx.Where(&#34;email = ?&#34;, guest.Email).First(foundGuest)
+	if err != nil &amp;&amp; !errors.Is(err, sql.ErrNoRows) {
+		log.Printf(&#34;guest lookup error %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	if foundGuest.ID.IsNil() {
+		// Try to create new guest.
+		foundGuest.Email = guest.Email
+		foundGuest.FullName = guest.FullName
+
+		err = tx.Create(foundGuest)
+		if err != nil {
+			log.Printf(&#34;error creating guest %s&#34;, err)
+			return c.Redirect(301, &#34;/&#34;)
+		}
+	}
+
+	res := &amp;models.EventAttendee{}
+	res.GuestID = foundGuest.ID
+	res.EventID = event.ID
+
+	err = tx.Create(res)
+	if err != nil {
+		if strings.Contains(err.Error(), &#34;Duplicate entry&#34;) {
+			c.Flash().Add(&#34;warning&#34;, &#34;A reservation already exists for that person.&#34;)
+			return c.Redirect(301, &#34;/events/&#34;+event.ID.String())
+		}
+		log.Printf(&#34;error making reservation %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+	// For HTMX, we return a simple string to render in-place where the form was.
+	return c.Render(http.StatusOK, r.String(&#34;&lt;div class=&#39;alert alert-info&#39;&gt;Reservation complete for &#34;+foundGuest.Email+&#34;&lt;/div&gt;&#34;))
+}
+
+</pre>
+<p>The only change is at the end, where we return a string, not an html template. This change means our htmx form submission works via AJAX, but the normal form submission won&rsquo;t work anymore. We need to return an html template if the form is returned without AJAX. That&rsquo;s the point of progressive enhancement.</p>
+<p>To accomplish that, we need to make the controller detect a normal form submission from one sent by htmx. We have a couple options. Often with Buffalo, we can check the request for <code>Content-Type: application/json</code> which indicates that JavaScript is involved. The htmx api allows us to set custom headers with the <code>hx-headers</code> attribute. That would work, but the Plush <code>form_for()</code> helper doesn&rsquo;t like interprering that JSON string, as it corrupts some of the encoding.</p>
+<p>No worry, we can reuse that <code>hx-vals</code> atrribute we saw earlier. Let&rsquo;s just add <code>&quot;htmx&quot; = true</code>.</p>
+<p><code>templates/events/_add-guest-form.plush.html</code></p>
+<pre class="code-block">
+  
+&lt;%= form_for(guest, {
+    action: eventAddGuestPath({id: event.ID}),
+    hx-post: eventAddGuestPath({id: event.ID}),
+    hx-vals: `{&#34;htmx&#34;: true}`
+  }) { %&gt;
+  &lt;%= f.InputTag(&#34;Email&#34;) %&gt;
+  &lt;%= f.InputTag(&#34;FullName&#34;) %&gt;
+  &lt;%= f.SubmitTag(&#34;Reserve a spot&#34;) %&gt;
+&lt;% } %&gt;
+
+</pre>
+<p>Now update the controller to sniff for that value, which only comes through when htmx makes the request.</p>
+<p><code>actions/events.go</code></p>
+<pre class="code-block">
+  
+// EventAddGuestHandler responds to POST to create add-guest.
+func EventAddGuestHandler(c buffalo.Context) error {
+  ...
+
+	err = tx.Create(res)
+	if err != nil {
+		if strings.Contains(err.Error(), &#34;Duplicate entry&#34;) {
+			c.Flash().Add(&#34;warning&#34;, &#34;A reservation already exists for that person.&#34;)
+			return c.Redirect(301, &#34;/events/&#34;+event.ID.String())
+		}
+		log.Printf(&#34;error making reservation %s&#34;, err)
+		return c.Redirect(301, &#34;/&#34;)
+	}
+
+  // Changes here:
+
+	htmx := false
+	c.Request().ParseForm()
+	for k, _ := range c.Request().Form {
+		if k == &#34;htmx&#34; {
+			htmx = true
+      break
+		}
+	}
+	if htmx {
+		// For HTMX, we return a simple string to render in-place where the form was.
+		return c.Render(http.StatusOK, r.String(&#34;&lt;div class=&#39;alert alert-info&#39;&gt;Reservation complete for &#34;+foundGuest.Email+&#34;&lt;/div&gt;&#34;))
+	}
+
+	c.Flash().Add(&#34;info&#34;, &#34;Reservation complete for &#34;+foundGuest.Email)
+	return c.Redirect(301, &#34;/events/&#34;+event.ID.String())
+}
+
+</pre>
+<p>We do a little extra work to parse the form and look for that &ldquo;htmx&rdquo; value. Another option is to make a custom struct to handle this request with all the values, Event, Guest and &ldquo;htmx&rdquo;. In both cases, we know this came from htmx and return a string.</p>
+<p>Remember we need to check for htmx-mode early in the flow, so that errors can return either a string, or an HTML page. Sometimes, you see APIs that return the full error page — not a string — on an AJAX request. That&rsquo;s not a great experience.</p>
+<p>The project code here ignores some of the error cases, so don&rsquo;t make the same mistake!</p>
+<h2 id="conclusion-lessons-to-using-htmx">Conclusion: Lessons to Using htmx</h2>
+<p>There are lots of ways to use JavaScript! In my mind, htmx is a new one that uses some old, proven strategies.</p>
+<ol>
+<li>use the server to render as much as possible of your web pages</li>
+<li>you can accomplish a lot on a page with only remove and replace commands in the browser</li>
+<li>serve fragments of HTML — not JSON — in your AJAX requests to avoid duplicating code</li>
+<li>identify the building blocks of your content to understand what the templates should contain</li>
+</ol>
+<p>Many web platforms have flexible templating systems that allow you to create &ldquo;design components&rdquo; that be used and re-used in various places. With Buffalo, that&rsquo;s partial templates, struct methods that return strings, or <a href="https://gobuffalo.io/documentation/frontend-layer/custom-helpers/">template helpers</a>. Give htmx a try and see what you can build!</p>
+
+  </div>
+
+    </div><div class="footer">
+  <div class="ui center aligned basic segment">
+    <p>Copyright 2021-2. All rights reserved.</p>
+  </div>
+</div></body>
+</html>

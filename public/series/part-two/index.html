@@ -49,197 +49,137 @@
     </div>
 
     <div class="series-body ui segment">
-      
-
-<p>In this lesson, we will use the Buffalo CLI to generate a User model with custom fields, write some methods for User, and begin writing tests with the Buffalo test suite.</p>
-
+      <p>In this lesson, we will use the Buffalo CLI to generate a User model with custom fields, write some methods for User, and begin writing tests with the Buffalo test suite.</p>
 <h2 id="prerequisites">Prerequisites</h2>
-
 <ul>
 <li>install Buffalo according to the official site instructions</li>
 <li>have access to one of the supported database versions (CockroachDB, MySQL, PostgreSQL, SQLite). This could be installed on your local development machine or using a cloud solution that is accessible.</li>
 <li>have some familiarity with entering commands in the terminal</li>
 <li>install a code editor to modify files</li>
 </ul>
+<div class="ui segment secondary">
+  <h3>Resources</h3>
+  <p>This was built with Buffalo version 18.14.</p>
 
-<h2 id="resources">Resources</h2>
+  
+    <p><a href="https://www.youtube.com/watch?v=SwZoj4KEnvE&amp;list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&amp;index=2&amp;t=327s" class="link-border">Watch the video walkthrough</a></p>
+  
 
-<p><a href="https://www.youtube.com/watch?v=SwZoj4KEnvE&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=2&t=327s">Watch the video walkthrough</a></p>
+  
+    <p><a href="https://github.com/briwagner/learn-buffalo/tree/part-2" class="link-border">Project code</a></p>
+  
 
-<p><a href="https://github.com/briwagner/learn-buffalo/tree/part-2">View the code</a></p>
-
+</div>
 <h2 id="step-1-create-a-project">Step 1: Create a project</h2>
-
 <p>Enter <code>buffalo new PROJECT_NAME</code> to generate the skeleton for a new project. By default, Buffalo assumes you are using PostgreSQL, and the generated project files will reflect that. If you are not, then add <code>--db-type mysql</code> to the command above to specify MySQL or another DB platform.</p>
-
 <p>Use <code>buffalo new --help</code> for more instructions.</p>
-
 <p>Buffalo uses Go modules to manage dependencies, so one of the first files to notice is <code>go.mod</code> in the root of the project. If you see any packages that are missing, try typing <code>go mod tidy</code> in your terminal to resolve those dependencies.</p>
-
 <p>Next, make any necessary changes or overrides in these two files:</p>
-
 <ul>
 <li><code>database.yml</code>: holds database credentials</li>
 <li><code>.env</code>: add other environment settings, like custom HTTP port settings, or global variables</li>
 </ul>
-
 <p>Note the <a href="https://github.com/gobuffalo/pop">Buffalo Pop</a> plugin, which manages the database work, can take the database information as separate pieces (user, password, database name, etc.) or as a fully-formed connection string. The <code>database.yml</code> file that is generated for your database platform should have examples of both.</p>
-
 <h2 id="step-2-create-the-database">Step 2: Create the database</h2>
-
-<p>Using a UI tool or the CLI for your specific database, we need to create a user and password for this project. We can also create the databases at this point &mdash; one for the dev environment, and another for test. Or we can do it later with the Buffalo CLI.</p>
-
+<p>Using a UI tool or the CLI for your specific database, we need to create a user and password for this project. We can also create the databases at this point — one for the dev environment, and another for test. Or we can do it later with the Buffalo CLI.</p>
 <p>Note: the <a href="https://github.com/briwagner/learn-buffalo/tree/part-2"> demo project repo</a> uses a MariaDB database.</p>
-
 <p>For MariaDB, we can execute these commands in the database CLI:</p>
-
 <p><code>CREATE DATABASE cool_project;</code> (optional)</p>
-
 <p><code>CREATE USER buffalo@localhost IDENTIFIED BY 'special_password';</code></p>
-
 <p><code>GRANT ALL PRIVILEGES ON cool_project.* TO buffalo@localhost;</code></p>
-
 <p><code>GRANT ALL PRIVILEGES ON cool_project_test.* TO buffalo@localhost;</code></p>
-
 <p>Now we need to enter this information in the <code>database.yml</code> file above.</p>
-
 <p>After that, we can run <code>buffalo pop create</code> to generate the dev database if you didn&rsquo;t do that already. If it already exists, you will see an error message with that information. If it fails for another reason, make sure that your DB user has the proper rights to create the database specified.</p>
-
 <h2 id="step-3-create-a-user-model">Step 3: Create a User Model</h2>
-
 <p>Let&rsquo;s start writing some code for our project!</p>
-
 <p>Before we have page templates or routes to worry about, we need to create some data models for our site. This data is stored in the database, and the Buffalo Pop plugin will help us create, update, read, and delete that data for the site. If you remember the MVC discussion from Part One, this is the Model part of that paradigm.</p>
-
 <p>In the terminal, use this command to generate a User model.</p>
-
 <p><code>buffalo pop g model user</code></p>
-
 <p>What is happening here? We execute the <code>pop generate</code> command. Notice how &ldquo;g&rdquo; is short for &ldquo;generate&rdquo;; we can use both interchangeably. What do we want to generate? A model called &ldquo;user&rdquo;.</p>
-
 <p>Our project code should now have some new files in it.</p>
-
 <ul>
 <li>models/user.go</li>
 <li>models/user_test.go</li>
 <li>migrations/{date_stamp}_create_users.up.fizz</li>
 <li>migrations/{date_stamp}_create_users.down.fizz</li>
 </ul>
-
-<p>The first file has our User struct, and it&rsquo;s where we will add our application logic later. The second is for writing some tests against that logic. We also have two migration files &mdash; one for &ldquo;up&rdquo; to add the User table and columns, and another for reversing that action. See Step 4 below.</p>
-
+<p>The first file has our User struct, and it&rsquo;s where we will add our application logic later. The second is for writing some tests against that logic. We also have two migration files — one for &ldquo;up&rdquo; to add the User table and columns, and another for reversing that action. See Step 4 below.</p>
 <p>Open the <code>models/user.go</code> file and see what the User struct looks like.</p>
-
 <pre class="code-block">
 // User is used by pop to map your users database table to your go code.
 type User struct {
-    ID        uuid.UUID `json:"id" db:"id"`
-    CreatedAt time.Time `json:"created_at" db:"created_at"`
-    UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	ID        uuid.UUID `json:"id" db:"id"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 </pre>
-
 <p>This is the default set of fields that Buffalo will create for any new model. You can add fields here, but remember to modify the migration file so that those columns are generated in the database as well. If you want fields that don&rsquo;t add or read from the database then add this tag: <code>db:&quot;-&quot;</code>.</p>
-
 <p>Another option for adding fields is to do that when we call <code>buffalo pop g model user</code>. We can append to this command and specify additional fields to create. By default these fields are type <code>string</code> but we can override that:</p>
-
 <p><code>buffalo pop g model user first_name last_name age:int</code></p>
-
 <p>Now our model looks like this:</p>
-
 <pre class="code-block">
 // User is used by pop to map your users database table to your go code.
 type User struct {
-    ID        uuid.UUID `json:"id" db:"id"`
-    FirstName string    `json:"first_name" db:"first_name"`
-    LastName  string    `json:"last_name" db:"last_name"`
-    Age       int       `json:"age" db:"age"`
-    CreatedAt time.Time `json:"created_at" db:"created_at"`
-    UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	ID        uuid.UUID `json:"id" db:"id"`
+	FirstName string    `json:"first_name" db:"first_name"`
+	LastName  string    `json:"last_name" db:"last_name"`
+	Age       int       `json:"age" db:"age"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 </pre>
-
 <p>And the migration &ldquo;up&rdquo; file has this:</p>
-
 <pre class="code-block">
 create_table("users") {
-    t.Column("id", "uuid", {primary: true})
-    t.Column("first_name", "string", {})
-    t.Column("last_name", "string", {})
-    t.Column("age", "integer", {})
-    t.Timestamps()
+	t.Column("id", "uuid", {primary: true})
+	t.Column("first_name", "string", {})
+	t.Column("last_name", "string", {})
+	t.Column("age", "integer", {})
+	t.Timestamps()
 }
 </pre>
-
 <h2 id="step-4-run-the-database-migration">Step 4: Run the Database Migration</h2>
-
 <p>Let&rsquo;s put this structure into the database!</p>
-
 <p>Run <code>buffalo pop migrate up</code>. We should see confirmation that the migration was run. And logging in to the database cli, we should see that table was created with the fields we specified.</p>
-
 <p>With MariaDB, for example, type: <code>show tables</code> and <code>describe users</code>.</p>
-
 <p>Another handy command we can use during development is <code>buffalo pop reset</code>. This will drop the existing tables, and run the migration files in their proper order. <strong>Note you will lose any data stored in the database!</strong> But this is helpful if you return to a model later, and decide to make some changes, like adding or renaming a field.</p>
-
 <h2 id="step-5-add-logic-to-the-user-model">Step 5: Add Logic to the User Model</h2>
-
 <p>Just to get us rolling as we build out our User model, we can add a short method to return the full name of a user.</p>
-
 <pre class="code-block">
 func (u User) FullName() string {
-    return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
+	return fmt.Sprintf("%s %s", u.FirstName, u.LastName)
 }
 </pre>
-
 <p>This is something we can test! But first we need to do a little cleanup:</p>
-
 <p>First, double-check your package versions for Buffalo &ldquo;suite&rdquo; and &ldquo;validate&rdquo;. They should be running the latest version (suite v4 and validate v3 as of mid-2022) and sometimes the buffalo generator defaults to an old version. You can edit these imports in the relevant files, and run <code>go mod tidy</code> to resolve the dependencies. <a href="https://github.com/gobuffalo/suite">Suite</a> and <a href="https://github.com/gobuffalo/validate">Validate</a></p>
-
 <p>Second, remove the default test in the <code>models/user_test.go</code> file. Buffalo generates tests that are always doomed to fail as a reminder so that we write some real tests for our application logic. Remove this line:</p>
-
 <pre class="code-block">
 ms.Fail("This test needs to be implemented!")
 </pre>
-
 <p>We will never get that one to pass!</p>
-
 <h2 id="step-6-write-tests-for-the-user-model">Step 6: Write Tests for the User Model</h2>
-
 <p>The Buffalo package includes an entire test suite with each project. Execute <code>buffalo test</code> to run all the tests available.</p>
-
 <p>What is happening? Buffalo uses the &ldquo;test&rdquo; credentials in the <code>database.yml</code> file and tries to connect to the database. (Note that &ldquo;test&rdquo; is not a separate environment or tier, as might exist in other situations. Rather it&rsquo;s the resource to use when running the test suite.) Once connected, the Buffalo suite drops the tables (if they exist) and rebuilds them from the schema file before running each test.</p>
-
 <p>Another option, instead of running all the tests, is to specify a package to test:</p>
-
 <p><code>buffalo test ./models</code></p>
-
 <p>Or name a single function to test:</p>
-
 <p><code>buffalo test -m &quot;Test_User&quot;</code></p>
-
-<p>Now, let&rsquo;s write a test for that User method we added above. The name of our test functions can be anything &mdash; as long as it starts with &ldquo;Test_&ldquo;. But it&rsquo;s good practice to provide names that describe the behavior you are testing.</p>
-
+<p>Now, let&rsquo;s write a test for that User method we added above. The name of our test functions can be anything — as long as it starts with &ldquo;Test_&rdquo;. But it&rsquo;s good practice to provide names that describe the behavior you are testing.</p>
 <p>In <code>models/user_test.go</code>, add the following:</p>
-
 <pre class="code-block">
 func (ms *ModelSuite) Test_User() {
-    u := &User{
-        FirstName: "Nikola",
-        LastName:  "Tesla",
-    }
+	u := &User{
+		FirstName: "Nikola",
+		LastName:  "Tesla",
+	}
 
-    ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
+	ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
 }
 </pre>
-
 <p>If we run <code>buffalo test ./models</code>, we should see this test pass. Hooray!</p>
-
 <p>Writing our code in this order doesn&rsquo;t follow the advice of the <a href="https://en.wikipedia.org/wiki/Test-driven_development">test-driven development pattern</a> if that&rsquo;s important to you. Instead we expect to write a test first, run it to confirm it fails, and finally write the logic to make the test pass.</p>
-
 <p>In that case, you can modify <code>FullName()</code> to return an empty string. Now run the test and it should fail. Restore the original code, and confirm it passes.</p>
-
 <p>Going further, we can write tests that check our integration with the database. To do that, we&rsquo;ll need a database connection that the Buffalo suite provides via the <code>ModelSuite</code>, passed into each test function:</p>
-
 <pre class="code-block">
 func (ms *ModelSuite) Test_User() {
   // Get the database connection.
@@ -248,98 +188,78 @@ func (ms *ModelSuite) Test_User() {
   ...
 }
 </pre>
-
 <p>Now continue building out our test function, so the file looks like this:</p>
-
 <pre class="code-block">
 package models
 
 func (ms *ModelSuite) Test_User() {
-    u := &User{
-        FirstName: "Nikola",
-        LastName:  "Tesla",
-    }
+	u := &User{
+		FirstName: "Nikola",
+		LastName:  "Tesla",
+	}
 
-    ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
+	ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
 
-    db := ms.DB
-    err := db.Create(u)
-    if err != nil {
-        panic(err)
-    }
+	db := ms.DB
+	err := db.Create(u)
+	if err != nil {
+		panic(err)
+	}
 
-    ms.NotNil(u.ID, "User ID is generated when saved to DB.")
+	ms.NotNil(u.ID, "User ID is generated when saved to DB.")
 }
 </pre>
-
 <p>With this addition, we are saving the User to the database and checking any error. So what are we testing here? Note that we don&rsquo;t set the ID when we set the first and last name values. By checking the ID on the final line above, we confirm that it&rsquo;s being assigned during the call to <code>db.Create(u)</code>.</p>
-
 <p>This is a very simple test pattern. We can do better.</p>
-
 <h2 id="step-7-model-validators">Step 7: Model Validators</h2>
-
 <p>In many cases, we want to avoid empty values when saving data to the database. Each of our Users should always have a first and last name and an age, for example. How do we enforce that?</p>
-
 <p>Inside the <code>models/user.go</code> file, we can see that Buffalo has helped us get started. There are skeletons for three methods to validate data <em>before</em> it is saved to the database. We can add logic inside the <code>Validate</code> method which will run for all operations to create or update the data. If we have additional checks that should run <em>only</em> during a create operation, then we add that to <code>ValidateAndCreate</code>. Similar for <code>ValidateAndUpdate</code> for updates.</p>
-
 <p>Notice that each of these methods return a function and an error. So when adding custom validations we want to follow that pattern.</p>
-
 <pre class="code-block">
 // Validate gets run every time you call a "pop.Validate*" (pop.ValidateAndSave, pop.ValidateAndCreate, pop.ValidateAndUpdate) method.
 func (u *User) Validate(tx *pop.Connection) (*validate.Errors, error) {
-    var err error
-    return validate.Validate(
-        &validators.StringIsPresent{Field: u.FirstName, Name: "FirstName"},
-        &validators.StringIsPresent{Field: u.LastName, Name: "LastName"},
-        &validators.IntIsPresent{Field: u.Age, Name: "Age"},
-    ), err
+	var err error
+	return validate.Validate(
+		&validators.StringIsPresent{Field: u.FirstName, Name: "FirstName"},
+		&validators.StringIsPresent{Field: u.LastName, Name: "LastName"},
+		&validators.IntIsPresent{Field: u.Age, Name: "Age"},
+	), err
 }
 </pre>
-
 <p>The <a href="https://github.com/gobuffalo/validate">Buffalo validate</a> package has several other built-in validators, as well as custom functions we can write. Check <a href="https://pkg.go.dev/github.com/gobuffalo/validate/v3/validators">the docs</a> for more information.</p>
-
 <p>Now, if we run our test again, we won&rsquo;t see any change. We aren&rsquo;t setting an age in the test case, so the validation <code>IntIsPresent</code> should trigger an error. What happened?</p>
-
-<p>Our original code uses the <code>db.Create()</code> method, which doesn&rsquo;t run any of the model&rsquo;s validators. This can be handy during imports, when we need to insert data without running checks &mdash; hopefully you verify that data some other way! But for writing tests, we often want to reach for the pop.<code>ValidateAndCreate()</code> method. Let&rsquo;s fix that:</p>
-
+<p>Our original code uses the <code>db.Create()</code> method, which doesn&rsquo;t run any of the model&rsquo;s validators. This can be handy during imports, when we need to insert data without running checks — hopefully you verify that data some other way! But for writing tests, we often want to reach for the pop.<code>ValidateAndCreate()</code> method. Let&rsquo;s fix that:</p>
 <pre class="code-block">
 package models
 
 func (ms *ModelSuite) Test_User() {
-    u := &User{
-        FirstName: "Nikola",
-        LastName:  "Tesla",
-        Age: 42,
-    }
+	u := &User{
+		FirstName: "Nikola",
+		LastName:  "Tesla",
+		Age: 42,
+	}
 
-    ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
+	ms.Equal("Nikola Tesla", u.FullName(), "FullName returns user name.")
 
-    db := ms.DB
-    verrs, err := db.ValidateAndCreate(u)
-    if err != nil {
-        panic(err)
-    }
+	db := ms.DB
+	verrs, err := db.ValidateAndCreate(u)
+	if err != nil {
+		panic(err)
+	}
 
-    ms.NotNil(u.ID, "User ID is generated when saved to DB.")
-    ms.False(verrs.HasAny(), "User cannot be created without age field.")
+	ms.NotNil(u.ID, "User ID is generated when saved to DB.")
+	ms.False(verrs.HasAny(), "User cannot be created without age field.")
 }
 </pre>
-
 <p>See how <code>ValidateAndCreate</code> has two return values? The first is the validation errors from the validator, which are helpful when we are processing an HTML form and we want to return them to the user to properly complete the form. We&rsquo;ll see how those work in <a href="/series/part-six">Part Six: Forms</a>.</p>
-
 <p>In our test case, we can update our User to include an age, and then verify that no <code>verrs</code> come back.</p>
-
 <h2 id="step-8-going-further">Step 8: Going further</h2>
-
 <p>This is just the start of writing tests for our models. To learn more, check the documentation:</p>
-
 <ul>
 <li><a href="https://pkg.go.dev/github.com/gobuffalo/suite">Buffalo suite</a></li>
 <li><a href="https://pkg.go.dev/github.com/gobuffalo/validate">Buffalo validate</a></li>
 </ul>
-
 <p><a href="https://www.youtube.com/watch?v=SwZoj4KEnvE&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=2&t=327s">Watch the video</a></p>
-
 <p><a href="https://github.com/briwagner/learn-buffalo/tree/part-2">View the code</a></p>
 
     </div>
