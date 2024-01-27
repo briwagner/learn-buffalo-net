@@ -42,13 +42,11 @@ No. htmx is not layering JavaScript on top of HTML pages, rather it tries to lev
 
 Let's take a Buffalo project and see what it takes to extend it with htmx. We'll use our Event Planner app from this <a href="/recipe/integrate-vuejs/">recipe on VueJS</a>. Instead of using Vue, we'll modify the server-generated forms to include htmx-ready attributes.
 
-<div class="ui segment secondary">
-<h3>Resources</h3>
-
+{{< resourceblock >}}
 <p>Project code is here: <a href="https://github.com/briwagner/buffalo-vue-integration">Buffalo Vue Integration</a>. Be sure to checkout the <code>ajax-htmx</code> branch.</p>
 
 <p>This was built with Buffalo version 18.14. It was also built with a <a href="https://github.com/briwagner/buffalo-auth">version of the Buffalo Auth plugin</a>.</p>
-</div>
+{{< /resourceblock >}}
 
 ### Refactor 1: Apply htmx to a Search Form
 

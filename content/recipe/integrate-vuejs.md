@@ -26,15 +26,13 @@ From our starting point above, we will add some VueJS components.
 1. Validation for the guest-registration is quicker if it happens in the browser without hitting the server
 1. After submitting the form, our changes load faster if we don't reload the entire page, showing a success/error message instead
 
-<div class="ui segment secondary">
-<h3>Resources</h3>
-
+{{< resourceblock >}}
 <p>Project code is here: <a href="https://github.com/briwagner/buffalo-vue-integration">Buffalo Vue Integration</a></p>
 
 <p>This was built with Buffalo version 18.14. It was also built with a <a href="https://github.com/briwagner/buffalo-auth">version of the Buffalo Auth plugin</a>.</p>
 
-<p><strong>Note</strong>: this app was built with Webpack disabled, just to simplify the examples. The main Buffalo template `application.plush.html` includes a script tag to download VueJS and Axios from a CDN. There is benefit to using Webpack's bundling in a production app, but it would change some of the setup used here.</p>
-</div>
+<p><strong>Note</strong>: this app was built with Webpack disabled, just to simplify the examples. The main Buffalo template <code>application.plush.html</code> includes a script tag to download VueJS and Axios from a CDN. There is benefit to using Webpack's bundling in a production app, but it would change some of the setup used here.</p>
+{{< /resourceblock >}}
 
 <div class="ui segment red">
 <h3>Multiple Servers, Decoupled Frontend and Backend, etc.</h3>
