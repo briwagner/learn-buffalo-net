@@ -34,6 +34,20 @@ p {
   display: block;
 }
 
+div.ui.segment {
+  margin: 1.5em 0;
+  padding-bottom: 0.5em;
+
+  h2, h3, h4, h5 {
+    margin: 0.5em 0;
+  }
+
+  &.blockquoted {
+    border-left: 15px solid $primary-lt;
+    margin-right: 2em;
+  }
+}
+
 .header {
   background-color: $tertiary;
   color: white;
