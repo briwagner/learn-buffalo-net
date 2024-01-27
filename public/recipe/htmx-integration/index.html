@@ -64,9 +64,13 @@
 <h2 id="project-example---event-planner-app">Project Example - Event Planner App</h2>
 <p>Let&rsquo;s take a Buffalo project and see what it takes to extend it with htmx. We&rsquo;ll use our Event Planner app from this <a href="/recipe/integrate-vuejs/">recipe on VueJS</a>. Instead of using Vue, we&rsquo;ll modify the server-generated forms to include htmx-ready attributes.</p>
 <div class="ui segment secondary">
-<h3>Resources</h3>
+  <h3>Resources</h3>
+
+  
 <p>Project code is here: <a href="https://github.com/briwagner/buffalo-vue-integration">Buffalo Vue Integration</a>. Be sure to checkout the <code>ajax-htmx</code> branch.</p>
+
 <p>This was built with Buffalo version 18.14. It was also built with a <a href="https://github.com/briwagner/buffalo-auth">version of the Buffalo Auth plugin</a>.</p>
+
 </div>
 <h3 id="refactor-1-apply-htmx-to-a-search-form">Refactor 1: Apply htmx to a Search Form</h3>
 <p><strong>Use-case</strong>: we have a list of events, showing the title and date. This list could be long, so the page also has a text box where users enter search terms to filter the list of events. Buffalo renders the list server-side, like so:</p>
