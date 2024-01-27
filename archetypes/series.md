@@ -4,6 +4,8 @@ date: {{ .Date }}
 draft: false
 series: ""
 step: 1
+video: ""
+repo: ""
 summary: ""
 ---
 

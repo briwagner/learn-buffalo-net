@@ -1,0 +1,13 @@
+<div class="ui segment secondary">
+  <h3>Resources</h3>
+  <p>This was built with Buffalo version {{$.Site.Data.globals.buffaloVersion}}.</p>
+
+  {{ if .Page.Params.video }}
+    <p><a href="{{ .Page.Params.video }}" class="link-border">Watch the video walkthrough</a></p>
+  {{ end }}
+
+  {{ if .Page.Params.repo }}
+    <p><a href="{{ .Page.Params.repo }}" class="link-border">Project code</a></p>
+  {{ end }}
+
+</div>

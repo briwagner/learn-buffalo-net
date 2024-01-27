@@ -4,6 +4,8 @@ date: 2022-03-01T21:43:00-06:00
 draft: false
 series: ""
 step: 2
+video: "https://www.youtube.com/watch?v=SwZoj4KEnvE&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=2&t=327s"
+repo: "https://github.com/briwagner/learn-buffalo/tree/part-2"
 summary: "Create a user model, add fields and methods, and test"
 ---
 
@@ -16,11 +18,7 @@ In this lesson, we will use the Buffalo CLI to generate a User model with custom
 * have some familiarity with entering commands in the terminal
 * install a code editor to modify files
 
-## Resources
-
-<a href="https://www.youtube.com/watch?v=SwZoj4KEnvE&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=2&t=327s">Watch the video walkthrough</a>
-
-<a href="https://github.com/briwagner/learn-buffalo/tree/part-2">View the code</a>
+{{< series/resourceblock >}}
 
 ## Step 1: Create a project
 

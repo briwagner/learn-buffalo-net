@@ -4,6 +4,8 @@ date: 2022-03-01T21:31:17-06:00
 draft: false
 series: ""
 step: 1
+video: "https://www.youtube.com/watch?v=1mXWtP3EkLk&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=1"
+repo: "https://github.com/briwagner/learn-buffalo/tree/part-1"
 summary: "Create a new project, add static content, use dynamic route parameters."
 ---
 
@@ -15,11 +17,7 @@ This lesson will introduce you to the Buffalo framework, create a new project, a
 * have some familiarity with entering commands in the terminal
 * install a code editor to modify files
 
-## Resources
-
-<p><a href="https://www.youtube.com/watch?v=1mXWtP3EkLk&list=PL7fZGRmlHt5ldUTseGiwpG_-IjA7Yv143&index=1" class="link-border">Watch the video walkthrough</a></p>
-
-<p><a href="https://github.com/briwagner/learn-buffalo/tree/part-1" class="link-border">View the code</a></p>
+{{< series/resourceblock >}}
 
 ## What is Buffalo?
 
@@ -34,7 +32,7 @@ Buffalo is an open-source framework written in Golang. It's not one single packa
 * background tasks
 * testing suite
 
-Install Buffalo following the instructions on the official site. Once that's done, we can test some commands in a shell.
+Install Buffalo following the <a href="https://gobuffalo.io/documentation/getting_started/installation/">instructions on the official site</a>. Once that's done, we can test some commands in a shell.
 
 `buffalo version` will display the version number.
 
